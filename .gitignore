@@ -1,0 +1,13 @@
+.npm
+.eslintcache
+.idea/
+.aws-sam/
+packaged.yaml
+node_modules/
+coverage/
+.nyc_output/
+dist/
+
+.aws-secrets
+test-env.json
+samconfig.toml
