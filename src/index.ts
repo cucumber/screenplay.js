@@ -1,6 +1,6 @@
 import Actor, { Interaction } from './Actor'
 import ActorWorld, { ActorLookup } from './ActorWorld'
-import defineActorParameterType from './registerActorParameterType'
+import defineActorParameterType from './defineActorParameterType'
 
 export type { Interaction }
 export {
