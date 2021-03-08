@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/cucumber/screenplay.js/issues"
   },
-  "homepage": "https://github.com/cucumber/screenplay.js#readme"
+  "homepage": "https://github.com/cucumber/screenplay.js#readme",
+  "workspaces": [
+    "./samples/shouty"
+  ]
 }
