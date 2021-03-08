@@ -2,15 +2,29 @@
   "name": "@cucumber/screenplay",
   "version": "1.0.0",
   "description": "Utilities to use screenplay pattern easily with Cucumber",
-  "private": true,
-  "license": "MIT",
   "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.1.5"
+  },
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "test": "echo '@cucumber/screenplay has no tests 😃'"
   },
-  "devDependencies": {
-    "typescript": "4.1.5"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cucumber/screenplay.js.git"
+  },
+  "keywords": [
+    "testing",
+    "bdd",
+    "cucumber",
+    "screenplay"
+  ],
+  "author": "Cucumber Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cucumber/screenplay.js/issues"
+  },
+  "homepage": "https://github.com/cucumber/screenplay.js#readme"
 }
