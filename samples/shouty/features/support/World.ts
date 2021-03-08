@@ -1,5 +1,5 @@
-import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
-import { Actor, Interaction } from '@cucumber/screenplay'
+import { setWorldConstructor, Before, After, defineParameterType } from '@cucumber/cucumber'
+import { ActorWorld, Interaction, defineActorParameterType } from '@cucumber/screenplay'
 
 import Shouty from '../../src/shouty'
 import { makeApp} from '../../src/server'
@@ -15,27 +15,17 @@ import httpMessagesHeard from './questions/messagesHeard/httpMessagesHeard'
 
 type Stop = () => Promise<void>
 
-export default class World {
+defineActorParameterType(defineParameterType)
+
+export default class World extends ActorWorld {
   public readonly shouty = new Shouty()
   public readonly useHttpAdapter: boolean
   public readonly apiPort = 8080
   public readonly stops: Stop[] = []
 
-  private readonly actorByName = new Map<string, Actor>()
-
   constructor() {
+    super()
     this.useHttpAdapter = !!process.env.SHOUTY_HTTP_ADAPTERS
-  }
-
-  findOrCreateActor(actorName: string): Actor<World> {
-    let actor = this.actorByName.get(actorName)
-
-    if (actor === undefined) {
-      actor = new Actor<World>(this, actorName)
-      this.actorByName.set(actorName, actor)
-    }
-
-    return actor
   }
 
   moveTo(distance: number): Interaction {
