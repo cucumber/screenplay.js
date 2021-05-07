@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Utilities to use screenplay pattern easily with Cucumber",
   "main": "dist/src/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "typescript": "^4.1.5"
