@@ -1,5 +1,7 @@
 # @cucumber/screenplay
 
+[![CI](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml)
+
 This library is intented to ease the implementation of the [screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) with `cucumber.js`.
 
 ## Usage
