@@ -21,7 +21,7 @@ export default class World {
   public readonly apiPort = 8080
   public readonly stops: Stop[] = []
 
-  private readonly actorByName = new Map<string, Actor>()
+  private readonly actorByName = new Map<string, Actor<World>>()
 
   constructor() {
     this.useHttpAdapter = !!process.env.SHOUTY_HTTP_ADAPTERS
