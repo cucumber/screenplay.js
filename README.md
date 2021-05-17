@@ -1,5 +1,7 @@
 # @cucumber/screenplay
 
+[![CI](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml)
+
 This library is intented to ease the implementation of the [screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) with `cucumber.js`.
 
 ## Usage
@@ -112,7 +114,6 @@ Then('{actor} should be logged-in', function (actor: Actor<World>) {
 **Note:** the data remembered are scoped by `Actor`, so you can not access a data remembered by an actor when using another one. You can also have multiple
 actors storing different data with the same key.
 
-
 ## Integrating in an existing project
 
 ### Adding actor lookup to an existing project
@@ -170,3 +171,4 @@ defineParameterType({
   },
 })
 ```
+

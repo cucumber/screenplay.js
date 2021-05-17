@@ -26,8 +26,4 @@ export default class Actor<World> {
   ask<Answer>(question: Interaction<Answer>): Promise<Answer> {
     return this.attemptsTo(question)
   }
-
-  async stop() {
-    throw new Error('TODO stop')
-  }
 }
