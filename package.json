@@ -10,7 +10,8 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "test": "echo '@cucumber/screenplay has no tests 😃'",
+    "build_shouty": "cd samples/shouty && npm run build",
+    "test": "cd samples/shouty && npm test",
     "postinstall": "npm run build"
   },
   "repository": {
