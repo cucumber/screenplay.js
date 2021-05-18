@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "build_shouty": "cd samples/shouty && npm run build",
-    "test": "cd samples/shouty && npm test",
+    "test": "cd samples/shouty && npm test && SHOUTY_HTTP_ADAPTERS=1 npm run test",
     "postinstall": "npm run build"
   },
   "repository": {
