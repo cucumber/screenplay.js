@@ -1,13 +1,13 @@
 import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
-import {ActorWorld} from '../../src/index'
+import {ActorWorld, makeInteractionLoader} from '../../src/index'
 
 import Shouty from '../src/shouty'
 import { makeApp} from '../src/server'
 import useHttpAdapter from './helpers/useHttpAdapter'
 import { promisify } from 'util'
-import interaction from "./interactions/interaction";
 import {MessagesHeard, MoveTo, Shout} from "./interactions/types";
 
+const interaction = makeInteractionLoader(`${__dirname}/interactions/${useHttpAdapter() ? 'http' : 'direct'}`)
 ActorWorld.defineActorParameterType()
 
 type Stop = () => Promise<unknown>
