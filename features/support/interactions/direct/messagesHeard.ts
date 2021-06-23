@@ -1,7 +1,8 @@
 import { Actor } from '../../../../src'
 import World from '../../World'
+import {MessagesHeard} from "../types";
 
-export default function inProcessMessagesHeard() {
+export default function messagesHeard(): MessagesHeard {
   return async (actor: Actor<World>) => {
     return actor.world.shouty.getMessages(actor.name)
   }
