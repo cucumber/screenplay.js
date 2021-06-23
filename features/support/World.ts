@@ -1,11 +1,12 @@
 import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
-import {ActorWorld, Interaction} from '../../src/index'
+import {ActorWorld} from '../../src/index'
 
 import Shouty from '../src/shouty'
 import { makeApp} from '../src/server'
 import useHttpAdapter from './helpers/useHttpAdapter'
 import { promisify } from 'util'
 import interaction from "./interactions/interaction";
+import {MessagesHeard, MoveTo, Shout} from "./interactions/types";
 
 ActorWorld.defineActorParameterType()
 
@@ -17,9 +18,9 @@ export default class World extends ActorWorld {
   public readonly stops: Stop[] = []
 
   // Interactions
-  public moveTo: (number) => Interaction
-  public shout: (string) => Interaction
-  public messagesHeard: () => Interaction<readonly string[]>
+  public moveTo: MoveTo
+  public shout: Shout
+  public messagesHeard: MessagesHeard
 }
 
 setWorldConstructor(World)
