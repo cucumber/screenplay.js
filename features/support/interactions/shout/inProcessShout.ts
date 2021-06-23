@@ -1,4 +1,4 @@
-import { Actor } from '@cucumber/screenplay'
+import { Actor } from '../../../../src'
 import World from '../../World'
 
 export default function inProcessShout(message: string) {

@@ -3,5 +3,5 @@ import httpMessagesHeard from "./httpMessagesHeard";
 import inProcessMessagesHeard from "./inProcessMessagesHeard";
 
 export default function messagesHeard() {
-  return useHttpAdapter() ? httpMessagesHeard : inProcessMessagesHeard
+  return useHttpAdapter() ? httpMessagesHeard() : inProcessMessagesHeard()
 }

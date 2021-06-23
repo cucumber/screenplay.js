@@ -1,4 +1,4 @@
-import { Actor } from '@cucumber/screenplay'
+import { Actor } from '../../../../src'
 import World from '../../World'
 import fetch from 'node-fetch'
 

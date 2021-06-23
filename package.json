@@ -5,13 +5,23 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "dependencies": {},
+  "peerDependencies": {
+    "@cucumber/cucumber": "^7.0.0"
+  },
   "devDependencies": {
-    "typescript": "4.1.5"
+    "@cucumber/cucumber": "7.3.0",
+    "@types/express": "4.17.12",
+    "@types/node": "15.12.4",
+    "@types/node-fetch": "2.5.10",
+    "express": "4.17.1",
+    "node-fetch": "2.6.1",
+    "ts-node": "10.0.0",
+    "typescript": "4.3.4"
   },
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "build_shouty": "cd samples/shouty && npm run build",
-    "test": "cd samples/shouty && npm test && SHOUTY_HTTP_ADAPTERS=1 npm run test",
+    "test": "cucumber-js && SHOUTY_HTTP_ADAPTERS=1 cucumber-js",
     "postinstall": "npm run build"
   },
   "repository": {
@@ -29,8 +39,5 @@
   "bugs": {
     "url": "https://github.com/cucumber/screenplay.js/issues"
   },
-  "homepage": "https://github.com/cucumber/screenplay.js#readme",
-  "workspaces": [
-    "./samples/shouty"
-  ]
+  "homepage": "https://github.com/cucumber/screenplay.js#readme"
 }

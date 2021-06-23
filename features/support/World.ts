@@ -1,14 +1,14 @@
-import { setWorldConstructor, Before, After, defineParameterType } from '@cucumber/cucumber'
-import { ActorWorld, defineActorParameterType } from '@cucumber/screenplay'
+import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
+import { ActorWorld } from '../../src/index'
 
-import Shouty from '../../src/shouty'
-import { makeApp} from '../../src/server'
+import Shouty from '../src/shouty'
+import { makeApp} from '../src/server'
 import useHttpAdapter from './helpers/useHttpAdapter'
+import { promisify } from 'util'
 
+ActorWorld.defineActorParameterType()
 
-type Stop = () => Promise<void>
-
-defineActorParameterType(defineParameterType)
+type Stop = () => Promise<unknown>
 
 export default class World extends ActorWorld {
   public readonly shouty = new Shouty()
@@ -26,10 +26,7 @@ Before(async function (this: World) {
       app.on('error', reject)
 
       const server = app.listen(this.apiPort, resolve)
-      const stopServer = () =>
-        new Promise<void>((resolve, reject) =>
-          server.close((err: Error | undefined) => (err ? reject(err) : resolve()))
-        )
+      const stopServer: Stop = promisify(server.close.bind(server))
       this.stops.push(stopServer)
     })
   }

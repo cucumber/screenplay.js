@@ -1,6 +1,6 @@
-import { Actor } from '@cucumber/screenplay'
 import World from '../../World'
-import { Location } from '../../../../src/shouty'
+import { Location } from '../../../src/shouty'
+import {Actor} from "../../../../src";
 
 export default function inProcessMoveTo(distance: number) {
   return async (actor: Actor<World>) => {
