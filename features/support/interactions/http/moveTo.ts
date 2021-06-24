@@ -3,11 +3,13 @@ import {Actor} from "../../../../src";
 import World from "../../World";
 import {MoveTo} from "../types";
 
-export const moveTo: MoveTo = (distance) => {
+export const moveTo: MoveTo = (coordinate) => {
   return async (actor: Actor<World>) => {
     // TODO: Extract to HttpShouty
-    await fetch(`http://localhost:${actor.world.apiPort}/location?username=${actor.name}&locationX=${distance}&locationY=0`, {
-      method: 'POST'
-    })
+    const url = new URL(`http://localhost:${actor.world.apiPort}/location`)
+    url.searchParams.set('username', actor.name)
+    url.searchParams.set('x', '' + coordinate.x)
+    url.searchParams.set('y', '' + coordinate.y)
+    await fetch(url.toString(), { method: 'POST'})
   }
 }

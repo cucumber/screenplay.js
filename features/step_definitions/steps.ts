@@ -1,11 +1,20 @@
-import { Given, When, Then } from '@cucumber/cucumber'
+import {Given, When, Then, defineParameterType} from '@cucumber/cucumber'
 import {Actor} from '../../src'
 
 import assert from 'assert'
 import World from '../support/World'
+import {Coordinate} from "../src/types";
 
-Given('{actor} is located {int}m from {actor}', async function (this: World, mainActor: Actor<World>, distance: number, secondaryActor: Actor<World>) {
-  await mainActor.attemptsTo(this.moveTo(distance))
+defineParameterType({
+  name:'coordinate',
+  regexp: /\(\s*(\d+),\s*(\d+)\s*\)/,
+  transformer(x, y) {
+    return {x: +x, y: +y}
+  }
+})
+
+Given('{actor} is located at {coordinate}', async function (this: World, mainActor: Actor<World>, coordinate: Coordinate) {
+  await mainActor.attemptsTo(this.moveTo(coordinate))
 })
 
 When('{actor} shouts {string}', async function (this: World, actor: Actor<World>, message: string) {

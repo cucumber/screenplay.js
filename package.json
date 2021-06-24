@@ -11,7 +11,7 @@
   "devDependencies": {
     "@cucumber/cucumber": "7.3.0",
     "@cucumber/electron": "4.1.1",
-    "@cucumber/microdata": "1.4.0",
+    "@cucumber/microdata": "1.5.0",
     "@testing-library/dom": "8.0.0",
     "@testing-library/user-event": "13.1.9",
     "@types/express": "4.17.12",
@@ -22,16 +22,22 @@
     "electron": "13.1.4",
     "express": "4.17.1",
     "node-fetch": "2.6.1",
+    "npm-check-updates": "11.7.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "schema-dts": "0.8.3",
+    "source-map-support": "0.5.19",
     "ts-node": "10.0.0",
     "typescript": "4.3.4"
   },
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "build_shouty": "cd samples/shouty && npm run build",
-    "test": "cucumber-js && SHOUTY_HTTP_ADAPTERS=1 cucumber-js",
-    "postinstall": "npm run build"
+    "test": "npm run cucumber-direct && npm run cucumber-http && npm run cucumber-dom",
+    "cucumber-direct": "cucumber-js",
+    "cucumber-http": "SHOUTY_HTTP_ADAPTERS=1 cucumber-js",
+    "cucumber-dom": "SHOUTY_DOM_INTERACTIONS=1 cucumber-electron --stylesheet features/src/components/style.css",
+    "prepublishOnly": "npm run build",
+    "upgrade": "npm-check-updates --upgrade"
   },
   "repository": {
     "type": "git",

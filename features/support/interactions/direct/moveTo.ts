@@ -1,10 +1,9 @@
 import World from '../../World'
-import { Location } from '../../../src/Shouty'
 import {Actor} from "../../../../src";
 import {MoveTo} from "../types";
 
-export const moveTo: MoveTo = (distance) => {
+export const moveTo: MoveTo = (coordinate) => {
   return async (actor: Actor<World>) => {
-    actor.world.shouty.moveTo(actor.name, new Location(distance, 0))
+    actor.world.shouty.moveTo(actor.name, coordinate)
   }
 }

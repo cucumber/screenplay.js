@@ -1,5 +1,6 @@
 import express from 'express'
-import Shouty, { Location } from './Shouty'
+import Shouty from './Shouty'
+import {Coordinate} from "./types";
 
 export function makeApp() {
   const exp = express()
@@ -8,10 +9,12 @@ export function makeApp() {
   exp.post(
     '/location',
     async (req, res) => {
-      const {username, locationX, locationY } = req.query
+      const {username, x, y } = req.query
 
-      shouty.moveTo(username as string, new Location(parseInt(locationX as string), parseInt(locationY as string)))
-      res.status(200).send({username, locationX, locationY})
+      const coordinate: Coordinate = {x: +x, y: +y};
+      shouty.moveTo(username as string, coordinate)
+
+      res.status(200).send({username, x, y})
     }
   )
 

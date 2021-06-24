@@ -5,14 +5,17 @@ import getAppElement from "../../helpers/getAppElement";
 import {getByLabelText, getByText} from '@testing-library/dom'
 import userEvent from "@testing-library/user-event";
 
-export const moveTo: MoveTo = (distance) => {
+export const moveTo: MoveTo = (coordinate) => {
   return async (actor: Actor<World>) => {
-    const $appElement = getAppElement(actor)
+    const $appElement = getAppElement('moveTo', actor)
 
-    const $location = getByLabelText($appElement, `Location`)
-    userEvent.type($location, '{selectall}' + distance)
+    const $x = getByLabelText($appElement, `X`)
+    userEvent.type($x, '{selectall}' + coordinate.x)
 
-    const submit = getByText($appElement, `Submit`)
+    const $y = getByLabelText($appElement, `Y`)
+    userEvent.type($y, '{selectall}' + coordinate.y)
+
+    const submit = getByText($appElement, `Move`)
     userEvent.click(submit)
   }
 }
