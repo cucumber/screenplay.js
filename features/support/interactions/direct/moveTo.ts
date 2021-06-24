@@ -1,5 +1,5 @@
 import World from '../../World'
-import { Location } from '../../../src/shouty'
+import { Location } from '../../../src/Shouty'
 import {Actor} from "../../../../src";
 import {MoveTo} from "../types";
 

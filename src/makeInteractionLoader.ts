@@ -1,6 +1,14 @@
-export default function(dir: string) {
+export default function(interactionsDir: string) {
   return async function interaction<T>(name): Promise<T> {
-    const interaction = await import((`${dir}/${name}`))
-    return interaction[name] as T
+    const path = `${interactionsDir}/${name}`;
+    try {
+      const interaction = await import(path)
+      return interaction[name] as T
+    } catch(err) {
+      // @ts-ignore
+      return () => {
+        throw new Error(`No interaction in: ${path}.{js,ts,jsx,tsx}`)
+      }
+    }
   }
 }

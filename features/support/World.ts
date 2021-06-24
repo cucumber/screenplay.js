@@ -1,13 +1,22 @@
 import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
+import { AppElements } from '@cucumber/electron'
 import {ActorWorld, makeInteractionLoader} from '../../src/index'
 
-import Shouty from '../src/shouty'
+import Shouty from '../src/Shouty'
 import { makeApp} from '../src/server'
 import useHttpAdapter from './helpers/useHttpAdapter'
 import { promisify } from 'util'
 import {MessagesHeard, MoveTo, Shout} from "./interactions/types";
 
-const interaction = makeInteractionLoader(`${__dirname}/interactions/${useHttpAdapter() ? 'http' : 'direct'}`)
+let interactionsDir: string
+if(process.env.SHOUTY_DOM_INTERACTIONS) {
+  interactionsDir = `${__dirname}/interactions/dom`
+} else if(useHttpAdapter()) {
+  interactionsDir = `${__dirname}/interactions/http`
+} else {
+  interactionsDir = `${__dirname}/interactions/direct`
+}
+const interaction = makeInteractionLoader(interactionsDir)
 ActorWorld.defineActorParameterType()
 
 type Stop = () => Promise<unknown>
@@ -17,7 +26,9 @@ export default class World extends ActorWorld {
   public readonly apiPort = 8080
   public readonly stops: Stop[] = []
 
-  // Interactions
+  public readonly appElements = new AppElements()
+
+  // Screenplay Interactions
   public moveTo: MoveTo
   public shout: Shout
   public messagesHeard: MessagesHeard
@@ -29,6 +40,10 @@ Before(async function (this: World) {
   this.moveTo = await interaction('moveTo')
   this.shout = await interaction('shout')
   this.messagesHeard = await interaction('messagesHeard')
+
+  if(!process.env.KEEP_DOM) {
+    this.stops.push(() => Promise.resolve(this.appElements.destroyAll()))
+  }
 
   if (useHttpAdapter()) {
     const app = makeApp()

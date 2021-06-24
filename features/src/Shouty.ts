@@ -1,3 +1,5 @@
+import ShoutyApi from "./ShoutyApi";
+
 export class Location {
   constructor(
     public readonly x: number,
@@ -13,7 +15,7 @@ export class Location {
 }
 
 
-export default class Shouty {
+export default class Shouty implements ShoutyApi {
   private readonly locations = new Map<string, Location>()
   private readonly messages = new Map<string, string[]>()
 

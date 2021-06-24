@@ -1,5 +1,5 @@
 import express from 'express'
-import Shouty, { Location } from './shouty'
+import Shouty, { Location } from './Shouty'
 
 export function makeApp() {
   const exp = express()

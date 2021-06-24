@@ -1,5 +1,7 @@
 export type Interaction<Answer = void, World = unknown> = (actor: Actor<World>) => Promise<Answer>
 
+export type DefaultFunction<T> = (actor) => T
+
 /**
  * An Actor as defined by the ScreenPlay pattern
  */
@@ -14,7 +16,10 @@ export default class Actor<World = unknown> {
     this.memory.set(key, value)
   }
 
-  recall<T>(key: string): T {
+  recall<T>(key: string, defaultFunction?: DefaultFunction<T>): T {
+    if(!this.memory.has(key) && defaultFunction) {
+      this.memory.set(key, defaultFunction(this))
+    }
     return this.memory.get(key) as T
   }
 
