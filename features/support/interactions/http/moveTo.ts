@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
-import {Actor} from "../../../../src";
-import World from "../../World";
-import {MoveTo} from "../types";
+import { Actor } from '../../../../src'
+import World from '../../World'
+import { MoveTo } from '../types'
 
 export const moveTo: MoveTo = (coordinate) => {
   return async (actor: Actor<World>) => {
@@ -10,6 +10,6 @@ export const moveTo: MoveTo = (coordinate) => {
     url.searchParams.set('username', actor.name)
     url.searchParams.set('x', '' + coordinate.x)
     url.searchParams.set('y', '' + coordinate.y)
-    await fetch(url.toString(), { method: 'POST'})
+    await fetch(url.toString(), { method: 'POST' })
   }
 }

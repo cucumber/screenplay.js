@@ -1,4 +1,6 @@
-export type Interaction<Answer = void, World = unknown> = (actor: Actor<World>) => Promise<Answer>
+export type Interaction<Answer = void, World = unknown> = (
+  actor: Actor<World>
+) => Promise<Answer>
 
 export type DefaultFunction<T> = (actor) => T
 
@@ -12,12 +14,14 @@ export default class Actor<World = unknown> {
 
   remember<T>(key: string, value: T) {
     if (value === undefined || value === null)
-      throw new Error(`Cannot remember an empty value (${JSON.stringify(value)})`)
+      throw new Error(
+        `Cannot remember an empty value (${JSON.stringify(value)})`
+      )
     this.memory.set(key, value)
   }
 
   recall<T>(key: string, defaultFunction?: DefaultFunction<T>): T {
-    if(!this.memory.has(key) && defaultFunction) {
+    if (!this.memory.has(key) && defaultFunction) {
       this.memory.set(key, defaultFunction(this))
     }
     return this.memory.get(key) as T

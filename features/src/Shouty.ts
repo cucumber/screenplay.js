@@ -1,6 +1,6 @@
-import ShoutyApi from "./ShoutyApi";
-import {Coordinate} from "./types";
-import calculateDistance from "./calculateDistance";
+import ShoutyApi from './ShoutyApi'
+import { Coordinate } from './types'
+import calculateDistance from './calculateDistance'
 
 export default class Shouty implements ShoutyApi {
   private readonly coordinates = new Map<string, Coordinate>()
@@ -11,13 +11,16 @@ export default class Shouty implements ShoutyApi {
   }
 
   public shout(shouterName: string, message: string) {
-    const shouterLocation = this.coordinates.get(shouterName) || {x: 0, y: 0}
+    const shouterLocation = this.coordinates.get(shouterName) || { x: 0, y: 0 }
 
     for (const receiverName of this.coordinates.keys()) {
-      const receiverLocation = this.coordinates.get(receiverName) || {x: 0, y: 0}
+      const receiverLocation = this.coordinates.get(receiverName) || {
+        x: 0,
+        y: 0,
+      }
       const distance = calculateDistance(shouterLocation, receiverLocation)
 
-      if (distance <= 1000  && shouterName !== receiverName) {
+      if (distance <= 1000 && shouterName !== receiverName) {
         const receiverMessages = this.messages.get(receiverName) || []
         receiverMessages.push(message)
         this.messages.set(receiverName, receiverMessages)

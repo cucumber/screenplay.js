@@ -1,17 +1,17 @@
 import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
 import { AppElements } from '@cucumber/electron'
-import {ActorWorld, makeInteractionLoader} from '../../src/index'
+import { ActorWorld, makeInteractionLoader } from '../../src/index'
 
 import Shouty from '../src/Shouty'
-import { makeApp} from '../src/server'
-import useHttpAdapter from './helpers/useHttpAdapter'
+import { makeApp } from '../src/server'
+import shoutyHttpAdapters from './helpers/shoutyHttpAdapters'
 import { promisify } from 'util'
-import {MessagesHeard, MoveTo, Shout} from "./interactions/types";
+import { MessagesHeard, MoveTo, Shout } from './interactions/types'
 
 let interactionsDir: string
-if(process.env.SHOUTY_DOM_INTERACTIONS) {
+if (process.env.SHOUTY_DOM_INTERACTIONS) {
   interactionsDir = `${__dirname}/interactions/dom`
-} else if(useHttpAdapter()) {
+} else if (shoutyHttpAdapters()) {
   interactionsDir = `${__dirname}/interactions/http`
 } else {
   interactionsDir = `${__dirname}/interactions/direct`
@@ -41,11 +41,11 @@ Before(async function (this: World) {
   this.shout = await interaction('shout')
   this.messagesHeard = await interaction('messagesHeard')
 
-  if(!process.env.KEEP_DOM) {
+  if (!process.env.KEEP_DOM) {
     this.stops.push(() => Promise.resolve(this.appElements.destroyAll()))
   }
 
-  if (useHttpAdapter()) {
+  if (shoutyHttpAdapters()) {
     const app = makeApp()
 
     await new Promise<void>((resolve, reject) => {

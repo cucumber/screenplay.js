@@ -19,10 +19,20 @@
     "@types/node-fetch": "2.5.10",
     "@types/react": "17.0.11",
     "@types/react-dom": "17.0.8",
+    "@typescript-eslint/eslint-plugin": "4.28.0",
+    "@typescript-eslint/parser": "4.28.0",
     "electron": "13.1.4",
+    "eslint": "7.29.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-react": "7.24.0",
+    "eslint-plugin-react-hooks": "4.2.0",
     "express": "4.17.1",
     "node-fetch": "2.6.1",
     "npm-check-updates": "11.7.1",
+    "prettier": "2.3.1",
+    "pretty-quick": "3.1.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "schema-dts": "0.8.3",
@@ -37,7 +47,10 @@
     "cucumber-http": "SHOUTY_HTTP_ADAPTERS=1 cucumber-js",
     "cucumber-dom": "SHOUTY_DOM_INTERACTIONS=1 cucumber-electron --stylesheet features/src/components/style.css",
     "prepublishOnly": "npm run build",
-    "upgrade": "npm-check-updates --upgrade"
+    "upgrade": "npm-check-updates --upgrade",
+    "eslint": "eslint --ext ts,tsx --max-warnings 0 src features",
+    "eslint-fix": "eslint --ext ts,tsx --max-warnings 0 --fix src features",
+    "pretty-quick": "pretty-quick --staged"
   },
   "repository": {
     "type": "git",
@@ -54,5 +67,10 @@
   "bugs": {
     "url": "https://github.com/cucumber/screenplay.js/issues"
   },
-  "homepage": "https://github.com/cucumber/screenplay.js#readme"
+  "homepage": "https://github.com/cucumber/screenplay.js#readme",
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true
+  }
 }

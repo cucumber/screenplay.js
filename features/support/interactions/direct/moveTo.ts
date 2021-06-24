@@ -1,6 +1,6 @@
 import World from '../../World'
-import {Actor} from "../../../../src";
-import {MoveTo} from "../types";
+import { Actor } from '../../../../src'
+import { MoveTo } from '../types'
 
 export const moveTo: MoveTo = (coordinate) => {
   return async (actor: Actor<World>) => {

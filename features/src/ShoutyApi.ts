@@ -1,4 +1,4 @@
-import {Coordinate} from "./types";
+import { Coordinate } from './types'
 
 export default interface ShoutyApi {
   moveTo(name: string, location: Coordinate): void
