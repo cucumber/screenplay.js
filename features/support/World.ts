@@ -5,7 +5,7 @@ import { ActorWorld, makeInteractionLoader, defineActorParameterType } from '../
 import Shouty from '../src/Shouty'
 import { makeApp } from '../src/server'
 import { promisify } from 'util'
-import { MessagesHeard, MoveTo, Shout } from './interactions/types'
+import { MessagesHeard, Shout } from './interactions/types'
 
 defineActorParameterType()
 
@@ -19,7 +19,6 @@ export default class World extends ActorWorld {
   public readonly appElements = new AppElements()
 
   // Screenplay Interactions
-  public moveTo: MoveTo
   public shout: Shout
   public messagesHeard: MessagesHeard
 }
@@ -30,7 +29,6 @@ Before(async function (this: World) {
   const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'direct'}`
   const interaction = makeInteractionLoader(interactionsDir)
 
-  this.moveTo = await interaction('moveTo')
   this.shout = await interaction('shout')
   this.messagesHeard = await interaction('messagesHeard')
 })
@@ -41,7 +39,7 @@ Before(async function (this: World) {
   }
 
   if (process.env.CUCUMBER_SCREENPLAY_INTERACTIONS === 'http') {
-    const app = makeApp()
+    const app = makeApp(this.shouty)
 
     await new Promise<void>((resolve, reject) => {
       app.on('error', reject)

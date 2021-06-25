@@ -2,9 +2,8 @@ import express from 'express'
 import Shouty from './Shouty'
 import { Coordinate } from './types'
 
-export function makeApp() {
+export function makeApp(shouty: Shouty) {
   const exp = express()
-  const shouty = new Shouty()
 
   exp.post('/location', async (req, res) => {
     const { username, x, y } = req.query

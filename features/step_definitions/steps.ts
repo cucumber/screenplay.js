@@ -13,12 +13,12 @@ defineParameterType({
   },
 })
 
-Given(
-  '{actor} is located at {coordinate}',
-  async function (this: World, mainActor: Actor<World>, coordinate: Coordinate) {
-    await mainActor.attemptsTo(this.moveTo(coordinate))
-  }
-)
+Given('{actor} is located at {coordinate}', async function (this: World, actor: Actor<World>, coordinate: Coordinate) {
+  // It's a good guideline to never use interations in Given steps.
+  // Given steps is for setting up the "scene" of the scenario, and the preferred way
+  // to do this is by doing it directly in the domain layer
+  this.shouty.moveTo(actor.name, coordinate)
+})
 
 When('{actor} shouts {string}', async function (this: World, actor: Actor, message: string) {
   await actor.attemptsTo(this.shout(message))

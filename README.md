@@ -173,11 +173,9 @@ import { ActorWorld, makeInteractionLoader, defineActorParameterType, Interactio
 
 // Declare interaction signatures
 type Shout = (message: string) => Interaction
-type MoveTo = (coordinate: Coordinate) => Interaction
 type MessagesHeard = () => Interaction<readonly string[]>
 
 export default class World extends ActorWorld {
-  public moveTo: MoveTo
   public shout: Shout
   public messagesHeard: MessagesHeard
 }
@@ -187,7 +185,6 @@ Before(async function (this: World) {
   const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'direct'}`
   const interaction = makeInteractionLoader(interactionsDir)
 
-  this.moveTo = await interaction('moveTo')
   this.shout = await interaction('shout')
   this.messagesHeard = await interaction('messagesHeard')
 })
