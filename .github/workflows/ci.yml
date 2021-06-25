@@ -29,5 +29,5 @@ jobs:
       - name: npm test
         uses: GabrielBB/xvfb-action@v1
         with:
-          run: npm run ci-test
+          run: npm run test
       - run: npm run eslint
