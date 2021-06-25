@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "7.3.0",
-    "@cucumber/electron": "4.1.1",
+    "@cucumber/electron": "4.1.2",
     "@cucumber/microdata": "1.5.0",
     "@testing-library/dom": "8.0.0",
     "@testing-library/user-event": "13.1.9",
@@ -44,8 +44,8 @@
     "build": "tsc --build tsconfig.json",
     "test": "npm run cucumber-direct && npm run cucumber-http && npm run cucumber-dom",
     "cucumber-direct": "cucumber-js",
-    "cucumber-http": "SHOUTY_HTTP_ADAPTERS=1 cucumber-js",
-    "cucumber-dom": "SHOUTY_DOM_INTERACTIONS=1 cucumber-electron --stylesheet features/src/components/style.css",
+    "cucumber-http": "CUCUMBER_SCREENPLAY_INTERACTIONS=http cucumber-js",
+    "cucumber-dom": "CUCUMBER_SCREENPLAY_INTERACTIONS=dom cucumber-electron --stylesheet features/src/components/style.css",
     "prepublishOnly": "npm run build",
     "upgrade": "npm-check-updates --upgrade",
     "eslint": "eslint --ext ts,tsx --max-warnings 0 src features",
@@ -71,6 +71,7 @@
   "prettier": {
     "trailingComma": "es5",
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "printWidth": 120
   }
 }

@@ -1,23 +1,13 @@
 import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
 import { AppElements } from '@cucumber/electron'
-import { ActorWorld, makeInteractionLoader } from '../../src/index'
+import { ActorWorld, makeInteractionLoader, defineActorParameterType } from '../../src/index'
 
 import Shouty from '../src/Shouty'
 import { makeApp } from '../src/server'
-import shoutyHttpAdapters from './helpers/shoutyHttpAdapters'
 import { promisify } from 'util'
 import { MessagesHeard, MoveTo, Shout } from './interactions/types'
 
-let interactionsDir: string
-if (process.env.SHOUTY_DOM_INTERACTIONS) {
-  interactionsDir = `${__dirname}/interactions/dom`
-} else if (shoutyHttpAdapters()) {
-  interactionsDir = `${__dirname}/interactions/http`
-} else {
-  interactionsDir = `${__dirname}/interactions/direct`
-}
-const interaction = makeInteractionLoader(interactionsDir)
-ActorWorld.defineActorParameterType()
+defineActorParameterType()
 
 type Stop = () => Promise<unknown>
 
@@ -37,22 +27,27 @@ export default class World extends ActorWorld {
 setWorldConstructor(World)
 
 Before(async function (this: World) {
+  const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'direct'}`
+  const interaction = makeInteractionLoader(interactionsDir)
+
   this.moveTo = await interaction('moveTo')
   this.shout = await interaction('shout')
   this.messagesHeard = await interaction('messagesHeard')
+})
 
+Before(async function (this: World) {
   if (!process.env.KEEP_DOM) {
-    this.stops.push(() => Promise.resolve(this.appElements.destroyAll()))
+    this.stops.push(async () => this.appElements.destroyAll())
   }
 
-  if (shoutyHttpAdapters()) {
+  if (process.env.CUCUMBER_SCREENPLAY_INTERACTIONS === 'http') {
     const app = makeApp()
 
     await new Promise<void>((resolve, reject) => {
       app.on('error', reject)
 
       const server = app.listen(this.apiPort, resolve)
-      const stopServer: Stop = promisify(server.close.bind(server))
+      const stopServer = promisify(server.close.bind(server)) as Stop
       this.stops.push(stopServer)
     })
   }

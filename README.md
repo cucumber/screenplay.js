@@ -2,45 +2,106 @@
 
 [![CI](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml)
 
-This library is intented to ease the implementation of the [screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) with `cucumber.js`.
+This small library is an implementation of the [screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) for
+[cucumber.js](https://github.com/cucumber/cucumber-js/).
 
-## Usage
+It also enables you to swap in and out different implementations of automation code (*interactions*), so you can run the same scenarios against
+different layers of your system, with different tradeoffs:
+
+* In-memory - only interact with the system's domain logic (fastest, lowest confidence)
+* HTTP - only interact with the system via a HTTP API (slower, medium confidence)
+* UI - only interact with the system via the UI (slowest, highest confidence)
+
+Don't be put off by "slowest" here - you will still be able to run 10-100 scenarios *per second* if you automate through the UI
+using [@cucumber/electron](https://github.com/cucumber/cucumber-electron).
+
+## Installation
 
 First, add the library to your project:
 
     npm install @cucumber/screenplay --save-dev
 
-### Actor lookup
+## Usage
 
-Then, you will need a way to find actors inside your step definitions. The following snippet handles the setup for you:
+This guide will walk you through the usage of the library step by step. For a full example, please refer to the files
+in the `features` directory (which are also acceptance tests for this library).
+
+### Actors
+
+The central concept in `@cucumber/screenplay` is the `Actor`. An actor object represents a user interacting with the
+system.
+
+In order to access actor objects from your step definitions, you first need to define an `{actor}` 
+[parameter type](https://cucumber.io/docs/cucumber/cucumber-expressions/#parameter-types). `@cucumber/screenplay`
+provides some utilities to do this.
+
+Create a file called `features/support/World.ts` (if you haven't already got one) and add the following code: 
 
 ```typescript
+import { setWorldConstructor } from '@cucumber/cucumber'
 import { ActorWorld, defineActorParameterType } from '@cucumber/screenplay'
-import { setWorldConstructor, defineParameterType } from '@cucumber/cucumber'
 
-// Sets a default World that can look up actors by name
-setWorldConstructor(ActorWorld)
-// Create a default parameter type that can map any name with an actor
-defineActorParameterType(defineParameterType)
+// Define an {actor} parameter type that creates Actor objects
+defineActorParameterType()
+
+// Define your own World class that extends from ActorWorld
+export default class World extends ActorWorld {
+}
+setWorldConstructor(World)
 ```
 
-In your step, you will then be able to get your `Actor` instance, for example:
+Your step definitions will now be passed `Actor` objects for `{actor}` parameters, for example:
+
+```gherkin
+Then Martha should hear nothing
+```
 
 ```typescript
-Then('{actor} hears nothing', async function (this: World, actor: Actor<World>) {
+Then('{actor} should hear nothing', async function (actor: Actor) {
   // Do something with the actor
 })
 ```
 
-### Interacting with the system
+#### Using an explicit ActorLookup
 
-Now that you have an `Actor` object, you can use it to interact with the system under test. To do so, the `Actor` has two methods: `attemptsTo` and `ask`.
-
-Both methods are technically synonymous, but it adds some clarity to use `attemptTo` when performing an action on the system and use `ask` to perform a check. For example:
+If you cannot extend `ActorWorld`, you can add an `ActorLookup` field to your existing world class like so:
 
 ```typescript
-When('{actor} logs in', function (actor: Actor<World>) {
-  actor.attempTo(logIn())
+import { ActorLookup } from '@cucumber/screenplay'
+
+class World {
+  private readonly actorLookUp = new ActorLookup()
+
+  public findOrCreateActor(actorName: string): Actor<World> {
+    return this.actorLookUp.findOrCreateActor(this, actorName)
+  }
+}
+```
+
+#### defineActorParameterType options
+
+The `defineActorParameterType` function defines a parameter type named `{actor}` by default, and it uses the RegExp
+`/[A-Z][a-z]+/` (a capitailsed string).
+
+If you want to use a different name or regexp, you can override these defaults:
+
+```typescript
+defineActorParameterType({ name: 'acteur' })
+defineActorParameterType({ regexp: /Marcel|Bernadette|Hubert/ })
+defineActorParameterType({ name: 'acteur', regexp: /Marcel|Bernadette|Hubert/ })
+```
+
+### Interacting with the system
+
+Now that you have an `Actor` object, you can use it to interact with the system under test. To do so, the `Actor` has 
+two methods: `attemptsTo` and `ask`.
+
+Both methods are technically synonymous, but it adds some clarity to use `attemptsTo` to perform an action 
+that modifies the state of the system, and `ask` to query the system for information. For example:
+
+```typescript
+When('{actor} logs in', function (actor: Actor) {
+  actor.attemptsTo(logIn())
 })
 
 Then('{actor} should be logged-in', function (actor: Actor<World>) {
@@ -48,15 +109,16 @@ Then('{actor} should be logged-in', function (actor: Actor<World>) {
 })
 ```
 
-For more example of integrating, see the section dedicated to integrating this library in more complex project below.
+### Defining interactions and questions
 
-### Creating interactions or questions
+The `Actor#attemptsTo` and `Actor#ask` methods accept a single `Interaction` argument that describes how to perform
+an action (or ask a question).
 
 Interactions are simply functions that return a function that takes an `Actor` parameter. For example:
 
 ```typescript
 export default function signUp(email: string, password: string) {
-  return function (actor: Actor<World>) {
+  return function (actor: Actor<World>): string {
     // Interact with the system the way you like (Selenium, API call or whatever)
 
     return userId // the ID assigned to the user on sign-up
@@ -64,118 +126,113 @@ export default function signUp(email: string, password: string) {
 }
 ```
 
-And then to use it in the steps:
+Now you can use the interaction in your step definitions:
 
 ```typescript
-  const userId = actor.attemptTo(signUp('someone@example.com', 'some-secret-password'))
+const userId = await actor.attemptsTo(signUp('someone@example.com', 'some-secret-password'))
 ```
 
-You can define those functions as the `World` method or as simple function, depending on your needs.
-If you look at the [shouty example included in this repo](./samples/shouty), you will see that we organized our interactions/questions based on a tree structure:
+### Using different interaction implementations
+
+It can often be useful to have multiple implementations of the same interaction. This allows you
+to build new functionality incrementally with fast feedback.
+
+For example, you might be working on a new requirement that allows users to log in. You can start
+by building just the server side domain logic without any HTTP or UI, and get quick feedback as you progress.
+
+Then, you can run the same scenarios again, but this time swapping out your interactions with implementations
+that make HTTP requests or interact with a DOM - without changing any code.
+
+If you look at the [shouty example included in this repo](./features), you will see that we organized 
+our interactions/questions based on a tree structure:
 
 ```
-features/
-└── support/
-    ├── interactions
-    |   ├── anInteraction
-    |   |   ├── inProcessAnInteraction.ts
-    |   |   └── httpAnInteraction.ts
-    |   └── anotherInteraction
-    |       ├── inProcessAnotherInteraction.ts
-    |       └── httpAnotherInteraction.ts
-    └── questions
-        ├── aQuestion
-        |   ├── inProcessAQuestion.ts
-        |   └── httpAQuestion.ts
-        └── anotherQuestion
-            ├── inProcessAnotherQuestion.ts
-            └── httpAnotherQuestion.ts
+features
+├── hear_shout.feature
+└── support
+    └── interactions
+        ├── direct
+        │   ├── messagesHeard.ts
+        │   ├── moveTo.ts
+        │   └── shout.ts
+        ├── dom
+        │   ├── messagesHeard.ts
+        │   ├── moveTo.ts
+        │   └── shout.ts
+        └── http
+            ├── messagesHeard.ts
+            ├── moveTo.ts
+            └── shout.ts
 ```
 
-This architecture is not mandatory at all, but proves to be really usefull when you want to have multiple implementations of the same interaction/question, but interacting
-with the system under test on different layers.
+In order to decide at run-time what implementations to use, you can use the *interaction loader* provided in `@cucumber/screenplay`:
+
+```typescript
+import { setWorldConstructor } from '@cucumber/cucumber'
+import { ActorWorld, makeInteractionLoader, defineActorParameterType, Interaction } from '@cucumber/screenplay'
+
+// Declare interaction signatures
+type Shout = (message: string) => Interaction
+type MoveTo = (coordinate: Coordinate) => Interaction
+type MessagesHeard = () => Interaction<readonly string[]>
+
+export default class World extends ActorWorld {
+  public moveTo: MoveTo
+  public shout: Shout
+  public messagesHeard: MessagesHeard
+}
+setWorldConstructor(World)
+
+Before(async function (this: World) {
+  const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'direct'}`
+  const interaction = makeInteractionLoader(interactionsDir)
+
+  this.moveTo = await interaction('moveTo')
+  this.shout = await interaction('shout')
+  this.messagesHeard = await interaction('messagesHeard')
+})
+```
+
+This will load the appropriate interations based on the value of the `CUCUMBER_INTERACTIONS` environment variable.
+
+If you're using this technique, you also need to adapt your step definitions to reference interactions from the *world* (`this`):
+
+```typescript
+When('{actor} shouts {string}', async function (this: World, actor: Actor, message: string) {
+    await actor.attemptsTo(this.shout(message))
+  }
+)
+```
 
 ### Sharing data between steps
 
-Your actors have the possibility to recall data between steps using the `recall` and `remember` methods. For example:
+Your actors have the abililty to `remember` and `recall` data between steps. For example:
 
 ```typescript
-When('{actor} logs in', function (actor: Actor<World>) {
-  const loggedIn = actor.attemptsTo(login())
-  actor.remember('loggedIn', loggedIn)
+When('{actor} logs in', function (this: World, actor: Actor<World>) {
+  const userId = actor.attemptsTo(this.login())
+  actor.remember('userId', userId)
 })
 
-
-Then('{actor} should be logged-in', function (actor: Actor<World>) {
-  assert.ok(actor.recall('loggedIn'))
+Then('{actor} should be logged in', function (actor: Actor<World>) {
+  assert.ok(actor.recall('userId'))
 })
 ```
 
-**Note:** the data remembered are scoped by `Actor`, so you can not access a data remembered by an actor when using another one. You can also have multiple
-actors storing different data with the same key.
+**Note:** the data remembered is scoped by `Actor`, so you can not access a data remembered by an actor when using another 
+one. You can also have multiple actors storing different data with the same key. Every `Actor` is discarded at the end of
+each scenario, so you won't be able to `recall` anything from previous scenarios.
 
-## Integrating in an existing project
+### Accessing the world from actors
 
-### Adding actor lookup to an existing project
-
-If you have already started using Cucumber in your project and already created a World object, you will not be able to simply use `ActorWorld` as
-the default World class.
-You have two solutions here:
-
-#### 1) use `ActorWorld` as the super class for your existing World
-
-One simple solution to get the `findOrCreateActor`method on your `World` object is to extend the `ActorWorld` provided by this library:
+If your interactions need to access data in the `world`, they can do so via the `Actor#world` property. If you're doing this
+you should also declare the generic type of the actor in the interaction implementation:
 
 ```typescript
-import { ActorWorld } from '@cucumber/screenplay'
-import { setWorldConstructor } from '@cucumber/cucumber'
-
-class World extends ActorWorld {
-  // ...
-}
-
-setWorldConstructor(World)
-```
-
-#### 2) Add an `ActorLookup` to your World
-
-If you can not extend `ActorWorld`, you can also add an `ActorLookup` instance to your world object like so:
-
-```typescript
-import { ActorLookUp } from '@cucumber/screenplay'
-
-class World {
-  private readonly actorLookUp = new ActorLookUp()
-
-  findOrCreateActor(actorName: string): Actor<any> {
-    return this.actorLookUp.findOrCreateActor(this, actorName)
+export const moveTo: MoveTo = (coordinate) => {
+  // We're declaring the World type of the actor so that we can access its members
+  return async (actor: Actor<World>) => {
+    actor.world.shouty.moveTo(actor.name, coordinate)
   }
 }
 ```
-
-## Specifying different regular expressions for matching actors
-
-The regular expression used to match an `Actor` name provided by `defineActorParameterType` only match a capital latin letter followed
-by any number of latin letters. This may not fit your needs, but it is pretty easy to write your own matcher.
-
-For example, if you want to only match some specific names for your actors:
-
-```typescript
-import { setWorldConstructor, defineParameterType } from '@cucumber/cucumber'
-
-defineParameterType({
-  name: 'actor',
-  regexp: /Alice|Bob|Charlie/,
-  transformer(this: World, actorName: string) {
-    return this.findOrCreateActor(actorName)
-  },
-})
-```
-
-## Shouty EXAMPLE
-
-This is a TypeScript port of [Shouty.js](https://github.com/cucumber-ltd/shouty.js) using [@cucumber/screenplay](https://github.com/cucumber/screenplay.js).
-
-The scenarios can be executed in two ways:
-- `npm run test`: this will interact with the typescript functions directly
-- `SHOUTY_HTTP_ADAPTERS=1 npm run test`: the scenarios will interact with Shouty at the HTTP layer

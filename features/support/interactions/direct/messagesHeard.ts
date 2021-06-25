@@ -1,6 +1,6 @@
 import { Actor } from '../../../../src'
-import World from '../../World'
 import { MessagesHeard } from '../types'
+import World from '../../World'
 
 export const messagesHeard: MessagesHeard = () => {
   return async (actor: Actor<World>) => {

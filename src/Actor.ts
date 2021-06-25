@@ -1,6 +1,4 @@
-export type Interaction<Answer = void, World = unknown> = (
-  actor: Actor<World>
-) => Promise<Answer>
+export type Interaction<Answer = void> = (actor: Actor) => Promise<Answer>
 
 export type DefaultFunction<T> = (actor) => T
 
@@ -13,10 +11,6 @@ export default class Actor<World = unknown> {
   constructor(public readonly world: World, public readonly name: string) {}
 
   remember<T>(key: string, value: T) {
-    if (value === undefined || value === null)
-      throw new Error(
-        `Cannot remember an empty value (${JSON.stringify(value)})`
-      )
     this.memory.set(key, value)
   }
 
@@ -27,12 +21,12 @@ export default class Actor<World = unknown> {
     return this.memory.get(key) as T
   }
 
-  attemptsTo<Answer>(interaction: Interaction<Answer, World>): Promise<Answer> {
+  attemptsTo<Answer>(interaction: Interaction<Answer>): Promise<Answer> {
     return interaction(this)
   }
 
   // Just a synonym for attemptsTo
-  ask<Answer>(question: Interaction<Answer, World>): Promise<Answer> {
-    return this.attemptsTo(question)
+  ask<Answer>(question: Interaction<Answer>): Promise<Answer> {
+    return question(this)
   }
 }
