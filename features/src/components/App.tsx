@@ -8,15 +8,7 @@ type Props = {
 }
 
 const App: React.FunctionComponent<Props> = ({ name, shoutyApi, messagesHeard }) => {
-  const [x, setX] = useState(0)
-  const [y, setY] = useState(0)
-
   const [message, setMessage] = useState('')
-
-  const onMoveTo = (e) => {
-    e.preventDefault()
-    shoutyApi.moveTo(name, { x, y })
-  }
 
   const onShout = (e) => {
     e.preventDefault()
@@ -26,17 +18,6 @@ const App: React.FunctionComponent<Props> = ({ name, shoutyApi, messagesHeard })
   return (
     <div>
       <h1>{name}</h1>
-      <form onSubmit={onMoveTo}>
-        <label>
-          X
-          <input type="number" value={x} onChange={(e) => setX(+e.target.value)} />
-        </label>
-        <label>
-          Y
-          <input type="number" value={y} onChange={(e) => setY(+e.target.value)} />
-        </label>
-        <button type="submit">Move</button>
-      </form>
 
       <form onSubmit={onShout}>
         <label>
