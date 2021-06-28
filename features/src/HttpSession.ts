@@ -18,7 +18,7 @@ export default class HttpSession implements Session {
       eventSource.onerror = (e) => reject(new Error(`Connection failed: ${JSON.stringify(e)}`))
       eventSource.onopen = () => resolve()
 
-      eventSource.on('message', (event) => {
+      eventSource.addEventListener('message', (event) => {
         this.inbox.deliver(event.data)
       })
 

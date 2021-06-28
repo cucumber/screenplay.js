@@ -7,7 +7,7 @@ import { makeApp } from '../src/server'
 import { promisify } from 'util'
 import { InboxMessages, Shout, StartSession } from './interactions/types'
 
-defineParameterType({ ...ActorParameterType, name: 'after' })
+defineParameterType({ ...ActorParameterType })
 
 type Stop = () => Promise<void>
 
