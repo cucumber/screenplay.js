@@ -1,5 +1,10 @@
 import assert = require('assert')
-import eventually, { Condition } from '../src/eventually'
+import eventually, { Condition, EventuallyOptions } from '../src/eventually'
+
+const options: EventuallyOptions = {
+  timeout: 10,
+  interval: 2,
+}
 
 describe('#expect', () => {
   describe('without Promise', () => {
@@ -15,7 +20,7 @@ describe('#expect', () => {
         assert.strictEqual(n++, 42)
         return 'ok'
       }
-      const result = await eventually(condition)
+      const result = await eventually(condition, options)
       assert.strictEqual(result, 'ok')
     })
 
@@ -24,14 +29,14 @@ describe('#expect', () => {
         assert.strictEqual(10, 42)
         return 'ok'
       }
-      await assert.rejects(eventually(condition, { timeout: 150 }), {
+      await assert.rejects(eventually(condition, options), {
         message: 'Expected values to be strictly equal:\n\n10 !== 42\n',
       })
     })
 
     it('rejects with a timeout error when the condition never settles', async () => {
       const condition: Condition = () => new Promise((resolve) => setTimeout(resolve, 200))
-      await assert.rejects(eventually(condition, { timeout: 150 }), { message: 'Timeout after 150ms' })
+      await assert.rejects(eventually(condition, options), { message: 'Timeout after 10ms' })
     })
   })
 
@@ -48,7 +53,7 @@ describe('#expect', () => {
         assert.strictEqual(n++, 42)
         return 'ok'
       }
-      const result = await eventually(condition)
+      const result = await eventually(condition, options)
       assert.strictEqual(result, 'ok')
     })
 
@@ -57,14 +62,14 @@ describe('#expect', () => {
         assert.strictEqual(10, 42)
         return 'ok'
       }
-      await assert.rejects(eventually(condition, { timeout: 150 }), {
+      await assert.rejects(eventually(condition, options), {
         message: 'Expected values to be strictly equal:\n\n10 !== 42\n',
       })
     })
 
     it('rejects with a timeout error when the condition never settles', async () => {
       const condition: Condition = () => new Promise((resolve) => setTimeout(resolve, 200))
-      await assert.rejects(eventually(condition, { timeout: 150 }), { message: 'Timeout after 150ms' })
+      await assert.rejects(eventually(condition, options), { message: 'Timeout after 10ms' })
     })
   })
 })
