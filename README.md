@@ -38,11 +38,11 @@ provides some utilities to do this.
 Create a file called `features/support/World.ts` (if you haven't already got one) and add the following code: 
 
 ```typescript
-import { setWorldConstructor } from '@cucumber/cucumber'
-import { ActorWorld, defineActorParameterType } from '@cucumber/screenplay'
+import { defineParameterType, setWorldConstructor } from '@cucumber/cucumber'
+import { ActorWorld, ActorParameterType } from '@cucumber/screenplay'
 
 // Define an {actor} parameter type that creates Actor objects
-defineActorParameterType()
+defineParameterType(ActorParameterType)
 
 // Define your own World class that extends from ActorWorld
 export default class World extends ActorWorld {
@@ -78,17 +78,17 @@ class World {
 }
 ```
 
-#### defineActorParameterType options
+#### Overriding ActorParameterType options
 
-The `defineActorParameterType` function defines a parameter type named `{actor}` by default, and it uses the RegExp
-`/[A-Z][a-z]+/` (a capitailsed string).
+The `defineParameterType(ActorParameterType)` function call defines a parameter type named `{actor}` by default, 
+and it uses the RegExp `/[A-Z][a-z]+/` (a capitailsed string).
 
 If you want to use a different name or regexp, you can override these defaults:
 
 ```typescript
-defineActorParameterType({ name: 'acteur' })
-defineActorParameterType({ regexp: /Marcel|Bernadette|Hubert/ })
-defineActorParameterType({ name: 'acteur', regexp: /Marcel|Bernadette|Hubert/ })
+defineParameterType({ ...ActorParameterType, name: 'acteur' })
+defineParameterType({ ...ActorParameterType, regexp: /Marcel|Bernadette|Hubert/ })
+defineParameterType({ ...ActorParameterType, name: 'acteur', regexp: /Marcel|Bernadette|Hubert/ })
 ```
 
 ### Interacting with the system
@@ -144,7 +144,7 @@ Then, you can run the same scenarios again, but this time swapping out your inte
 that make HTTP requests or interact with a DOM - without changing any code.
 
 If you look at the [shouty example included in this repo](./features), you will see that we organized 
-our interactions/questions based on a tree structure:
+our interactions/questions in two directories:
 
 ```
 features
@@ -155,50 +155,48 @@ features
         │   ├── inboxMessages.ts
         │   ├── moveTo.ts
         │   └── shout.ts
-        ├── dom
-        │   ├── inboxMessages.ts
-        │   ├── moveTo.ts
-        │   └── shout.ts
-        └── http
+        └── session
             ├── inboxMessages.ts
             ├── moveTo.ts
             └── shout.ts
 ```
 
-In order to decide at run-time what implementations to use, you can use the *interaction loader* provided in `@cucumber/screenplay`:
+In order to decide at run-time what interaction implementations to use, you can use the *interaction loader* provided in `@cucumber/screenplay`:
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
 import { ActorWorld, makeInteractionLoader, defineActorParameterType, Interaction } from '@cucumber/screenplay'
 
 // Declare interaction signatures
+type StartSession = (coordinate: Coordinate) => Interaction<Promise<void>>
 type Shout = (message: string) => Interaction
-type MessagesHeard = () => Interaction<readonly string[]>
+type InboxMessages = () => Interaction<readonly Message[]>
 
 export default class World extends ActorWorld {
+  public startSession: StartSession
   public shout: Shout
-  public inboxMessages: MessagesHeard
+  public inboxMessages: InboxMessages
 }
 setWorldConstructor(World)
 
 Before(async function (this: World) {
-  const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'direct'}`
+  const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'session'}`
   const interaction = makeInteractionLoader(interactionsDir)
 
+  this.startSession = await interaction('startSession')
   this.shout = await interaction('shout')
   this.inboxMessages = await interaction('inboxMessages')
 })
 ```
 
-This will load the appropriate interations based on the value of the `CUCUMBER_INTERACTIONS` environment variable.
+This will load the appropriate interations based on the value of the `CUCUMBER_SCREENPLAY_INTERACTIONS` environment variable.
 
 If you're using this technique, you also need to adapt your step definitions to reference interactions from the *world* (`this`):
 
 ```typescript
 When('{actor} shouts {string}', async function (this: World, actor: Actor, message: string) {
-    await actor.attemptsTo(this.shout(message))
-  }
-)
+  await actor.attemptsTo(this.shout(message))
+})
 ```
 
 ### Sharing data between steps
@@ -216,8 +214,8 @@ Then('{actor} should be logged in', function (actor: Actor<World>) {
 })
 ```
 
-**Note:** the data remembered is scoped by `Actor`, so you can not access a data remembered by an actor when using another 
-one. You can also have multiple actors storing different data with the same key. Every `Actor` is discarded at the end of
+**Note:** the data remembered is scoped by `Actor`, so you cannot access data remembered by one actor from another 
+one. You can have multiple actors storing different data with the same key. Every `Actor` is discarded at the end of
 each scenario, so you won't be able to `recall` anything from previous scenarios.
 
 ### Accessing the world from actors
@@ -233,3 +231,66 @@ export const moveTo: MoveTo = (coordinate) => {
   }
 }
 ```
+
+### Handling asynchronous behaviour
+
+In a distributed system it may take some time before the outcome of an action propagates around the whole system.
+
+For example, in a chat application, when one user sends a message, it may take a few milliseconds before the 
+other suers receive the message, because it travels through a network.
+
+In cases like this you can use the `eventually` function to peridoically check for a specific condition:
+
+```typescript
+Then('{actor} hears {actor}’s message', async function (this: World, listener: Actor<World>, shouter: Actor) {
+  const shouterLastMessage = shouter.recall('lastMessage')
+
+  await eventually(() => {
+    const listenerMessages = listener.ask(this.inboxMessages())
+    assert.deepStrictEqual(listenerMessages, [shouterLastMessage])
+  })
+})
+```
+
+The `eventually` function accepts a single argument - a zero argument `condition` function. If the `condition` function 
+throws an error, it will be called again at a regular `interval` until it passes without throwing an exception. If it doesn't
+pass or finish within a `timeout` period, a timeout error is thrown.
+
+The default `interval` is `50ms` and the default `timeout` is `1000ms`. This can be overridden with a second 
+`{ interval: number, timeout: number}` argument after the `condition`.
+
+### Design recommendations
+
+When you're working with `@cucumber/screenplay` and testing against multiple layers, we recommend you use only two
+interaction implementations:
+
+* `dom` for interactions that use the DOM
+* `session` for interactions that use a `Session`
+
+A `Session` represents a user (actor) having an interactive session with your system. A `Session` will typically be used 
+in two places of your code:
+
+* From your `session` interactions
+* From your UI code (React/Vue components etc)
+
+`Session` is an interface that is specific to your implementation that you should implement yourself. Your UI code 
+will use it to interact with the server. This separation of concerns prevents network implementation details to
+bleed into the UI code.
+
+You'll typically have two implementations of your `Session` interface - `HttpSession` and `DirectSession`.
+
+The `HttpSession` is where you encapsulate all of the `fetch`, `WebSocket` and `EventSource` logic. This is the class
+your UI will use in production. You will also use it in tests.
+
+The `DirectSession` is an implementation that talks directly to the server side domain layer with direct function calls
+(without any networking). This implementation will only be used in tests.
+
+By organising your code this way, you have four ways you can run your Cucumber Scenarios.
+
+* `session` interactions using `DirectSession` (fastest tests, domain layer coverage)
+* `session` interations using `HttpSession` (slower tests, http + domain layer coverage)
+* `dom` interactions using `DirectSession` (slower tests, UI + domain layer coverage)
+* `dom` interactions using `HttpSession` (slowest tests, UI + http + domain layer coverage)
+
+In the example we use `CUCUMBER_SCREENPLAY_INTERACTIONS=dom|session` and `CUCUMBER_SCREENPLAY_SESSIONS=http|direct`
+to control how to interact with the system and how the system is assembled.
