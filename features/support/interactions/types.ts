@@ -1,4 +1,5 @@
 import { Interaction } from '../../../src'
+import { Message } from '../../src/types'
 
-export type Shout = (message: string) => Interaction
-export type MessagesHeard = () => Interaction<readonly string[]>
+export type Shout = (message: Message) => Interaction
+export type InboxMessages = () => Interaction<readonly Message[]>

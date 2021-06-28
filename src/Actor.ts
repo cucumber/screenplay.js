@@ -1,6 +1,6 @@
 export type Interaction<Answer = void> = (actor: Actor) => Promise<Answer>
 
-export type DefaultFunction<T> = (actor) => T
+export type DefaultFunction<T> = () => T
 
 /**
  * An Actor as defined by the ScreenPlay pattern
@@ -16,7 +16,7 @@ export default class Actor<World = unknown> {
 
   recall<T>(key: string, defaultFunction?: DefaultFunction<T>): T {
     if (!this.memory.has(key) && defaultFunction) {
-      this.memory.set(key, defaultFunction(this))
+      this.memory.set(key, defaultFunction())
     }
     return this.memory.get(key) as T
   }
@@ -25,7 +25,10 @@ export default class Actor<World = unknown> {
     return interaction(this)
   }
 
-  // Just a synonym for attemptsTo
+  /**
+   * Just a synonym for attemptsTo
+   * @deprecated use expect instead
+   */
   ask<Answer>(question: Interaction<Answer>): Promise<Answer> {
     return question(this)
   }

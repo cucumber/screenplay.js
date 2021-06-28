@@ -4,10 +4,11 @@ import { Shout } from '../types'
 import getAppElement from '../../helpers/getAppElement'
 import { getByLabelText, getByText } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
+import { Message } from '../../../src/types'
 
-export const shout: Shout = (message: string) => {
+export const shout: Shout = (message: Message) => {
   return async (actor: Actor<World>) => {
-    const $appElement = getAppElement('shout', actor)
+    const $appElement = getAppElement(actor)
 
     const $location = getByLabelText($appElement, `Message`)
     userEvent.type($location, '{selectall}' + message)

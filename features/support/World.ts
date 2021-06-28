@@ -5,7 +5,7 @@ import { ActorWorld, makeInteractionLoader, defineActorParameterType } from '../
 import Shouty from '../src/Shouty'
 import { makeApp } from '../src/server'
 import { promisify } from 'util'
-import { MessagesHeard, Shout } from './interactions/types'
+import { InboxMessages, Shout } from './interactions/types'
 
 defineActorParameterType()
 
@@ -20,17 +20,17 @@ export default class World extends ActorWorld {
 
   // Screenplay Interactions
   public shout: Shout
-  public messagesHeard: MessagesHeard
+  public inboxMessages: InboxMessages
 }
 
 setWorldConstructor(World)
 
 Before(async function (this: World) {
-  const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'direct'}`
+  const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'session'}`
   const interaction = makeInteractionLoader(interactionsDir)
 
   this.shout = await interaction('shout')
-  this.messagesHeard = await interaction('messagesHeard')
+  this.inboxMessages = await interaction('inboxMessages')
 })
 
 Before(async function (this: World) {
@@ -38,7 +38,7 @@ Before(async function (this: World) {
     this.stops.push(async () => this.appElements.destroyAll())
   }
 
-  if (process.env.CUCUMBER_SCREENPLAY_INTERACTIONS === 'http') {
+  if (process.env.CUCUMBER_SCREENPLAY_SESSIONS === 'http') {
     const app = makeApp(this.shouty)
 
     await new Promise<void>((resolve, reject) => {

@@ -152,15 +152,15 @@ features
 └── support
     └── interactions
         ├── direct
-        │   ├── messagesHeard.ts
+        │   ├── inboxMessages.ts
         │   ├── moveTo.ts
         │   └── shout.ts
         ├── dom
-        │   ├── messagesHeard.ts
+        │   ├── inboxMessages.ts
         │   ├── moveTo.ts
         │   └── shout.ts
         └── http
-            ├── messagesHeard.ts
+            ├── inboxMessages.ts
             ├── moveTo.ts
             └── shout.ts
 ```
@@ -177,7 +177,7 @@ type MessagesHeard = () => Interaction<readonly string[]>
 
 export default class World extends ActorWorld {
   public shout: Shout
-  public messagesHeard: MessagesHeard
+  public inboxMessages: MessagesHeard
 }
 setWorldConstructor(World)
 
@@ -186,7 +186,7 @@ Before(async function (this: World) {
   const interaction = makeInteractionLoader(interactionsDir)
 
   this.shout = await interaction('shout')
-  this.messagesHeard = await interaction('messagesHeard')
+  this.inboxMessages = await interaction('inboxMessages')
 })
 ```
 
