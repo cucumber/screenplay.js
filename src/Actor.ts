@@ -1,4 +1,4 @@
-export type Interaction<Answer = void> = (actor: Actor) => Promise<Answer>
+export type Interaction<Answer = void> = (actor: Actor) => Answer
 
 export type DefaultFunction<T> = () => T
 
@@ -21,15 +21,14 @@ export default class Actor<World = unknown> {
     return this.memory.get(key) as T
   }
 
-  attemptsTo<Answer>(interaction: Interaction<Answer>): Promise<Answer> {
+  attemptsTo<Answer>(interaction: Interaction<Answer>): Answer {
     return interaction(this)
   }
 
   /**
    * Just a synonym for attemptsTo
-   * @deprecated use expect instead
    */
-  ask<Answer>(question: Interaction<Answer>): Promise<Answer> {
+  ask<Answer>(question: Interaction<Answer>): Answer {
     return question(this)
   }
 }

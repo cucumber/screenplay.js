@@ -1,12 +1,12 @@
 import calculateDistance from './calculateDistance'
-import { Message } from './types'
+import { Message, Session } from './types'
 import ShoutySession from './ShoutySession'
 import Inbox from './Inbox'
 
 export default class Shouty {
   private readonly sessionByUserId = new Map<string, ShoutySession>()
 
-  getShoutySession(userId: string): ShoutySession {
+  makeShoutySession(userId: string): ShoutySession {
     if (!this.sessionByUserId.has(userId)) {
       // TODO: subscribe to Inbox so we can send EventSource message
       const inbox = new Inbox()
@@ -16,10 +16,13 @@ export default class Shouty {
     return this.sessionByUserId.get(userId)
   }
 
-  broadcast(shoutySession: ShoutySession, message: Message) {
-    const fromCoordinate = shoutySession.coordinate
+  getSession(userId: string): Session {
+    return this.sessionByUserId.get(userId)
+  }
+
+  broadcast(fromSession: ShoutySession, message: Message) {
     for (const recipient of this.sessionByUserId.values()) {
-      const distance = calculateDistance(fromCoordinate, recipient.coordinate)
+      const distance = calculateDistance(fromSession.coordinate, recipient.coordinate)
       if (distance <= 1000) {
         recipient.inbox.deliver(message)
       }

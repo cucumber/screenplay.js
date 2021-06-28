@@ -23,13 +23,17 @@ export default async function eventually<Result>(
   let lastError: Error | undefined = undefined
   const answerPromise = new Promise<Result>((resolve) => {
     const iv = setInterval(() => {
-      const result = condition()
-      Promise.resolve(result)
-        .then((answer) => {
-          clearInterval(iv)
-          resolve(answer)
-        })
-        .catch((err) => (lastError = err))
+      try {
+        const result = condition()
+        Promise.resolve(result)
+          .then((answer) => {
+            clearInterval(iv)
+            resolve(answer)
+          })
+          .catch((err) => (lastError = err))
+      } catch (err) {
+        lastError = err
+      }
     }, interval)
   })
   const timeoutPromise = new Promise<Result>((resolve, reject) =>

@@ -1,5 +1,6 @@
 import { Interaction } from '../../../src'
-import { Message } from '../../src/types'
+import { Message, Coordinate } from '../../src/types'
 
+export type StartSession = (coordinate: Coordinate) => Interaction<Promise<void>>
 export type Shout = (message: Message) => Interaction
 export type InboxMessages = () => Interaction<readonly Message[]>

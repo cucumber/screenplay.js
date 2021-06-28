@@ -13,4 +13,8 @@ export default class ActorLookup {
 
     return actor
   }
+
+  public get actors(): IterableIterator<Actor> {
+    return this.actorByName.values()
+  }
 }

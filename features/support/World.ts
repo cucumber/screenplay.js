@@ -1,11 +1,12 @@
 import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
 import { AppElements } from '@cucumber/electron'
-import { ActorWorld, makeInteractionLoader, defineActorParameterType } from '../../src/index'
+import { ActorWorld, makeInteractionLoader, defineActorParameterType, Actor } from '../../src/index'
 
 import Shouty from '../src/Shouty'
 import { makeApp } from '../src/server'
 import { promisify } from 'util'
-import { InboxMessages, Shout } from './interactions/types'
+import { InboxMessages, Shout, StartSession } from './interactions/types'
+import getSession from './helpers/getSession'
 
 defineActorParameterType()
 
@@ -19,6 +20,7 @@ export default class World extends ActorWorld {
   public readonly appElements = new AppElements()
 
   // Screenplay Interactions
+  public startSession: StartSession
   public shout: Shout
   public inboxMessages: InboxMessages
 }
@@ -29,6 +31,7 @@ Before(async function (this: World) {
   const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'session'}`
   const interaction = makeInteractionLoader(interactionsDir)
 
+  this.startSession = await interaction('startSession')
   this.shout = await interaction('shout')
   this.inboxMessages = await interaction('inboxMessages')
 })
@@ -52,5 +55,9 @@ Before(async function (this: World) {
 })
 
 After(async function (this: World) {
-  await Promise.all(this.stops.reverse().map((stop) => stop()))
+  let stops = this.stops
+  if (process.env.CUCUMBER_SCREENPLAY_SESSIONS === 'http') {
+    stops = stops.concat([...this.actorLookup.actors].map((actor: Actor<World>) => () => getSession(actor).stop()))
+  }
+  await Promise.all(stops.reverse().map((stop) => stop()))
 })

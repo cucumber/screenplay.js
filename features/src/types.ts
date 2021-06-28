@@ -11,6 +11,8 @@ export interface Session {
   readonly userId: string
   readonly inbox: Inbox
   send(message: Message): Promise<void>
+  start(): Promise<void>
+  stop(): Promise<void>
 }
 
 export type MessageListener = (message: Message) => void
