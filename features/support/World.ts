@@ -1,6 +1,6 @@
 import { setWorldConstructor, Before, After, defineParameterType } from '@cucumber/cucumber'
 import { AppElements } from '@cucumber/electron'
-import { ActorWorld, makeInteractionLoader, ActorParameterType, Stop } from '../../src/index'
+import { ActorWorld, makeInteractionLoader, ActorParameterType } from '../../src/index'
 
 import Shouty from '../src/Shouty'
 import { makeApp } from '../src/server'
@@ -8,6 +8,8 @@ import { promisify } from 'util'
 import { InboxMessages, Shout, StartSession } from './interactions/types'
 
 defineParameterType({ ...ActorParameterType, name: 'after' })
+
+type Stop = () => Promise<void>
 
 export default class World extends ActorWorld {
   public readonly stops: Stop[] = []
