@@ -10,6 +10,7 @@ import { InboxMessages, Shout, StartSession } from './interactions/types'
 defineActorParameterType()
 
 export default class World extends ActorWorld {
+  public readonly stops: Stop[] = []
   public readonly shouty = new Shouty()
   public readonly apiPort = 8080
 
@@ -51,5 +52,5 @@ Before(async function (this: World) {
 })
 
 After(async function (this: World) {
-  await this.stop()
+  await Promise.all(this.stops.reverse().map((stop) => stop()))
 })
