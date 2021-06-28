@@ -1,21 +1,17 @@
 import { setWorldConstructor, Before, After } from '@cucumber/cucumber'
 import { AppElements } from '@cucumber/electron'
-import { ActorWorld, makeInteractionLoader, defineActorParameterType, Actor } from '../../src/index'
+import { ActorWorld, makeInteractionLoader, defineActorParameterType, Stop } from '../../src/index'
 
 import Shouty from '../src/Shouty'
 import { makeApp } from '../src/server'
 import { promisify } from 'util'
 import { InboxMessages, Shout, StartSession } from './interactions/types'
-import getSession from './helpers/getSession'
 
 defineActorParameterType()
-
-type Stop = () => Promise<unknown>
 
 export default class World extends ActorWorld {
   public readonly shouty = new Shouty()
   public readonly apiPort = 8080
-  public readonly stops: Stop[] = []
 
   public readonly appElements = new AppElements()
 
@@ -55,9 +51,5 @@ Before(async function (this: World) {
 })
 
 After(async function (this: World) {
-  let stops = this.stops
-  if (process.env.CUCUMBER_SCREENPLAY_SESSIONS === 'http') {
-    stops = stops.concat([...this.actorLookup.actors].map((actor: Actor<World>) => () => getSession(actor).stop()))
-  }
-  await Promise.all(stops.reverse().map((stop) => stop()))
+  await this.stop()
 })

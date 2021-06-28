@@ -48,7 +48,7 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "test": "npm run cucumber-direct && npm run cucumber-http && npm run cucumber-dom",
+    "test": "npm run cucumber-direct && npm run cucumber-http && npm run cucumber-dom && npm run cucumber-dom-http",
     "cucumber-direct": "cucumber-js",
     "cucumber-http": "CUCUMBER_SCREENPLAY_SESSIONS=http cucumber-js",
     "cucumber-dom": "CUCUMBER_SCREENPLAY_INTERACTIONS=dom cucumber-electron --stylesheet features/src/components/style.css",
