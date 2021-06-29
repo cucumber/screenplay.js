@@ -237,9 +237,9 @@ export const moveTo: MoveTo = (coordinate) => {
 In a distributed system it may take some time before the outcome of an action propagates around the whole system.
 
 For example, in a chat application, when one user sends a message, it may take a few milliseconds before the 
-other suers receive the message, because it travels through a network.
+other users receive the message, because it travels through a network.
 
-In cases like this you can use the `eventually` function to peridoically check for a specific condition:
+In cases like this you can use the `eventually` function to periodically check for a specific condition:
 
 ```typescript
 Then('{actor} hears {actor}’s message', async function (this: World, listener: Actor<World>, shouter: Actor) {
