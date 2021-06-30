@@ -277,19 +277,19 @@ in two places of your code:
 will use it to interact with the server. This separation of concerns prevents network implementation details to
 bleed into the UI code.
 
-You'll typically have two implementations of your `Session` interface - `HttpSession` and `DirectSession`.
+You'll typically have two implementations of your `Session` interface - `HttpSession` and `ShoutySession`.
 
 The `HttpSession` is where you encapsulate all of the `fetch`, `WebSocket` and `EventSource` logic. This is the class
 your UI will use in production. You will also use it in tests.
 
-The `DirectSession` is an implementation that talks directly to the server side domain layer with direct function calls
+The `ShoutySession` is an implementation that talks directly to the server side domain layer with direct function calls
 (without any networking). This implementation will only be used in tests.
 
 By organising your code this way, you have four ways you can run your Cucumber Scenarios.
 
-* `session` interactions using `DirectSession` (fastest tests, domain layer coverage)
+* `session` interactions using `ShoutySession` (fastest tests, domain layer coverage)
 * `session` interations using `HttpSession` (slower tests, http + domain layer coverage)
-* `dom` interactions using `DirectSession` (slower tests, UI + domain layer coverage)
+* `dom` interactions using `ShoutySession` (slower tests, UI + domain layer coverage)
 * `dom` interactions using `HttpSession` (slowest tests, UI + http + domain layer coverage)
 
 In the example we use `CUCUMBER_SCREENPLAY_INTERACTIONS=dom|session` and `CUCUMBER_SCREENPLAY_SESSIONS=http|direct`

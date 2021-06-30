@@ -1,22 +1,26 @@
-import { Given, When, Then, defineParameterType } from '@cucumber/cucumber'
+import { Given, When, Then } from '@cucumber/cucumber'
 import { Actor } from '../../src'
 
 import World from '../support/World'
-import { Coordinate, Message } from '../src/types'
+import { Message } from '../src/types'
 import assert from 'assert'
 import eventually from '../../src/eventually'
+import getSession from '../support/helpers/getSession'
 
-defineParameterType({
-  name: 'coordinate',
-  regexp: /\(\s*(\d+),\s*(\d+)\s*\)/,
-  transformer(x, y) {
-    return { x: +x, y: +y }
-  },
+Given('{actor} is online', async function (this: World, actor: Actor<World>) {
+  await actor.attemptsTo(this.startSession())
 })
 
-Given('{actor} is located at {coordinate}', async function (this: World, actor: Actor<World>, coordinate: Coordinate) {
-  await actor.attemptsTo(this.startSession(coordinate))
-})
+Given(
+  '{actor} is located {int}m from {actor}',
+  function (this: World, actor1: Actor<World>, distance: number, actor2: Actor<World>) {
+    // We don't use an interaction (actor.attemptsTo) here.
+
+    const actor1Session = this.shouty.getSession(getSession(actor1).userId)
+    const actor2Session = this.shouty.getSession(getSession(actor2).userId)
+    actor1Session.coordinate = { x: actor2Session.coordinate.x, y: actor2Session.coordinate.y + distance }
+  }
+)
 
 When('{actor} shouts {string}', async function (this: World, shouter: Actor, message: Message) {
   await shouter.attemptsTo(this.shout(message))

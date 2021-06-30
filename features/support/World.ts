@@ -8,6 +8,13 @@ import { promisify } from 'util'
 import { InboxMessages, Shout, StartSession } from './interactions/types'
 
 defineParameterType({ ...ActorParameterType })
+defineParameterType({
+  name: 'coordinate',
+  regexp: /\(\s*(\d+),\s*(\d+)\s*\)/,
+  transformer(x, y) {
+    return { x: +x, y: +y }
+  },
+})
 
 type Stop = () => Promise<void>
 

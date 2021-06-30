@@ -6,7 +6,7 @@ const options: EventuallyOptions = {
   interval: 2,
 }
 
-describe('#expect', () => {
+describe('eventually', () => {
   describe('without Promise', () => {
     it('resolves immediately when condition does not throw', async () => {
       const condition: Condition<number> = () => 42

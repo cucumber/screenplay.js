@@ -2,7 +2,7 @@ import { Coordinate, Message, Session } from './types'
 import Shouty from './Shouty'
 import Inbox from './Inbox'
 
-export default class DirectSession implements Session {
+export default class ShoutySession implements Session {
   public coordinate: Coordinate = { x: 0, y: 0 }
 
   constructor(
