@@ -1,0 +1,5 @@
+{
+  "require": ["./features/support/env.js"],
+  "extension": ["ts"],
+  "recursive": true
+}

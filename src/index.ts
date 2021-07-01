@@ -1,11 +1,7 @@
 import Actor, { Interaction } from './Actor'
-import ActorWorld, { ActorLookup } from './ActorWorld'
-import defineActorParameterType from './defineActorParameterType'
+import ActorParameterType from './ActorParameterType'
+import ActorWorld from './ActorWorld'
+import makeInteractionLoader, { InteractionLoader } from './makeInteractionLoader'
 
-export type { Interaction }
-export {
-  Actor,
-  ActorWorld,
-  ActorLookup,
-  defineActorParameterType
-}
+export type { Interaction, InteractionLoader }
+export { Actor, ActorWorld, makeInteractionLoader, ActorParameterType }

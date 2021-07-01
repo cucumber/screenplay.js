@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["ES2019", "DOM", "DOM.Iterable", "ESNext"],
+    "target": "ES2015",
     "module": "commonjs",
     "jsx": "react",
     "noUnusedLocals": true,
@@ -15,5 +16,5 @@
     "outDir": "dist",
     "declaration": true
   },
-  "include": ["src"],
+  "include": ["src", "test", "features"],
 }

@@ -24,11 +24,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - run: npm install
+      - run: npm ci
       - run: npm run build
-
-      - run: npm install
-        working-directory: samples/shouty
-
-      - run: npm run build_shouty
-      - run: npm run test
+      - name: npm test
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: npm run test
+      - run: npm run eslint

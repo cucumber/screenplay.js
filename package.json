@@ -1,18 +1,64 @@
 {
   "name": "@cucumber/screenplay",
-  "version": "1.0.0",
+  "version": "1.0.0-next.1",
   "description": "Utilities to use screenplay pattern easily with Cucumber",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "dependencies": {},
+  "peerDependencies": {
+    "@cucumber/cucumber": "^7.0.0"
+  },
   "devDependencies": {
-    "typescript": "4.1.5"
+    "@cucumber/cucumber": "7.3.0",
+    "@cucumber/electron": "4.1.3",
+    "@cucumber/microdata": "1.5.0",
+    "@testing-library/dom": "8.0.0",
+    "@testing-library/user-event": "13.1.9",
+    "@types/eventsource": "1.1.5",
+    "@types/express": "4.17.12",
+    "@types/mocha": "8.2.2",
+    "@types/node": "15.12.4",
+    "@types/node-fetch": "2.5.10",
+    "@types/react": "17.0.11",
+    "@types/react-dom": "17.0.8",
+    "@typescript-eslint/eslint-plugin": "4.28.0",
+    "@typescript-eslint/parser": "4.28.0",
+    "electron": "13.1.4",
+    "eslint": "7.29.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-react": "7.24.0",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "eventsource": "1.1.0",
+    "express": "4.17.1",
+    "mocha": "9.0.1",
+    "node-fetch": "2.6.1",
+    "npm-check-updates": "11.7.1",
+    "prettier": "2.3.1",
+    "pretty-quick": "3.1.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "schema-dts": "0.8.3",
+    "source-map-support": "0.5.19",
+    "ssestream": "1.1.0",
+    "ts-node": "10.0.0",
+    "typescript": "4.3.4",
+    "uuid": "8.3.2"
   },
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "build_shouty": "cd samples/shouty && npm run build",
-    "test": "cd samples/shouty && npm test && SHOUTY_HTTP_ADAPTERS=1 npm run test",
-    "postinstall": "npm run build"
+    "test": "npm run mocha && npm run cucumber-direct && npm run cucumber-http && npm run cucumber-dom && npm run cucumber-dom-http",
+    "mocha": "mocha",
+    "cucumber-direct": "cucumber-js",
+    "cucumber-http": "CUCUMBER_SCREENPLAY_SESSIONS=http cucumber-js",
+    "cucumber-dom": "CUCUMBER_SCREENPLAY_INTERACTIONS=dom cucumber-electron --stylesheet features/src/components/style.css",
+    "cucumber-dom-http": "CUCUMBER_SCREENPLAY_SESSIONS=http CUCUMBER_SCREENPLAY_INTERACTIONS=dom cucumber-electron --stylesheet features/src/components/style.css",
+    "prepublishOnly": "npm run build",
+    "upgrade": "npm-check-updates --upgrade",
+    "eslint": "eslint --ext ts,tsx --max-warnings 0 src features",
+    "eslint-fix": "eslint --ext ts,tsx --max-warnings 0 --fix src features",
+    "pretty-quick": "pretty-quick --staged"
   },
   "repository": {
     "type": "git",
@@ -30,7 +76,10 @@
     "url": "https://github.com/cucumber/screenplay.js/issues"
   },
   "homepage": "https://github.com/cucumber/screenplay.js#readme",
-  "workspaces": [
-    "./samples/shouty"
-  ]
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
+  }
 }
