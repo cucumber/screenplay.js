@@ -214,6 +214,17 @@ Then('{actor} should be logged in', function (actor: Actor<World>) {
 })
 ```
 
+You can also pass a function to `remember` to memoize a value:
+
+```typescript
+function getSomething(actor: Actor) {
+  actor.recall('something', () => ({ foo: 'bar' }))
+}
+
+// The same object is returned every time
+assert.strictEqual(getSomething(actor), getSomething(actor))
+```
+
 **Note:** the data remembered is scoped by `Actor`, so you cannot access data remembered by one actor from another 
 one. You can have multiple actors storing different data with the same key. Every `Actor` is discarded at the end of
 each scenario, so you won't be able to `recall` anything from previous scenarios.
