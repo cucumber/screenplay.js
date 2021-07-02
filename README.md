@@ -11,31 +11,34 @@ acceptance tests (Gherkin Scenarios):
 * 📗 Readable scenarios that describe the **what** instead of the **how** 
 * 🧰 Maintainable automation code
 
-The library is an implementation of the [screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/).
+The library is an implementation of the 
+[screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/).
 
 When you use Cucumber Screenplay, your step definitions are typically one-liners:
 
 ```typescript
-When('{actor} logs in', function (actor: Actor) {
-  actor.attemptsTo(logIn())
+When('{actor} logs in successfully', async function (actor: Actor) {
+  await actor.attemptsTo(logIn(`${actor.name}@test.com`, 'valid-password'))
 })
 ```
 
-You can provide several implementations of `logIn()` - one that interacts with the user interface, but *also* one that
-interacts with the API layer *underneath* the user interface via direct function calls.
+You can provide several implementations of `logIn` - one that interacts with the user interface, but *also* one that
+interacts with the API layer *underneath* the user interface via direct function calls or HTTP requests.
 
-This forces you to avoid UI language in your scenarios like "fill in field" and "click button", because it doesn't make sense to
-do that in an API implementation of the `logIn()` function. Likewise, it forces you to avoid using HTTP language like
-"execute HTTP POST /login", because it doesn't make sense to do this in the UI implementation of the `login()` function.
+This forces you to avoid UI language in your scenarios like "fill in field" and "click button", because it doesn't make
+sense to do that in a `logIn` implementation that isn't using the UI. Likewise, it forces you to avoid using HTTP 
+language like "execute HTTP POST /login", because it doesn't make sense to do this in the `logIn` implementation that 
+uses the UI.
 
-So you end up with readable scenarios that describe *what* the user can do, not *how* it's done. Your scenarios become
-living documentation that can be understood by everyone on the team.
+These constraints encourage you to write *readable* scenarios that describe *what users can do* rahter than 
+*how your system is implemented*. Your scenarios become living documentation that can be understood by everyone on 
+the team.
 
 ## Assemblies
 
-With Cucumber Screenplay you can build an acceptance test suite that you can run with multiple configurations. We call
-this *assemblies*. Below are some [assembly diagrams](https://github.com/subsecondtdd/assembly-diagrams#readme) that illustrate
-these different configurations:
+With Cucumber Screenplay you can evolve an acceptance test suite that you can run with multiple configurations, or 
+*assemblies*. The [assembly diagrams](https://github.com/subsecondtdd/assembly-diagrams#readme) below
+illustrate how:
 
 | DOM-HTTP-Domain                                | DOM-Domain                           | HTTP-Domain                            | Domain                       |
 | ---------------------------------------------- | ------------------------------------ | ---------------------------------------| ---------------------------- |
@@ -49,8 +52,8 @@ First, add the library to your project:
 
 ## Usage
 
-This guide will walk you through the usage of the library step by step. For a full example, please refer to the files
-in the `features` directory (which are also acceptance tests for this library).
+This guide will walk you through the usage of the `@cucumber/screenplay` step by step. For a full example, please refer 
+to the files in the `features` directory (which are also acceptance tests for this library).
 
 ### Actors
 
@@ -78,59 +81,77 @@ setWorldConstructor(World)
 Your step definitions will now be passed `Actor` objects for `{actor}` parameters, for example:
 
 ```gherkin
-Then Martha should hear nothing
+When Martha logs in
 ```
 
 ```typescript
-Then('{actor} should hear nothing', async function (actor: Actor) {
-  // Do something with the actor
+When('{actor} logs in', async function (actor: Actor) {
+  // The logIn() function is an Interaction
+  await actor.attemptsTo(logIn(`${actor.name}@test.com`, 'valid-password'))
 })
 ```
+
+Keep reading to learn how to define *Interactions*.
 
 ### Interacting with the system
 
-Now that your step definitions can be passed `Actor` objects, you can use `Actor#attemptsTo` and `Actor#ask` methods
-to interact with the system.
+Now that your step definitions can be passed `Actor` objects, we need to define `Interaction`s that the actor can use
+to *interact* with the system.
 
-The `Actor#attemptsTo` and `Actor#ask` methods are technically synonymous, but it adds some clarity to use `attemptsTo` 
-to perform an action that modifies the state of the system, and `ask` to query the system for information. For example:
+An interaction is a function that returns another function that expects an `Actor` parameter.
 
-```typescript
-When('{actor} logs in', function (actor: Actor) {
-  actor.attemptsTo(logIn())
-})
-
-Then('{actor} should be logged-in', function (actor: Actor<World>) {
-  assert.ok(actor.ask(isLoggedIn()))
-})
-```
-
-### Defining interactions and questions
-
-The `Actor#attemptsTo` and `Actor#ask` methods accept a single `Interaction` argument that describes how to perform
-an action (or ask a question).
-
-Interactions are simply functions that return another function that expects an `Actor` parameter. For example:
+Add the following to `features/support/interactions/logIn.ts`: 
 
 ```typescript
-export type SignUp = (email: string, password: string) => Interaction<Promise<string>>
+type LogIn = (email: string, password: string) => Interaction<Promise<string>>
 
-export const signUp: SignUp = (email, password) => {
+export const logIn: LogIn = (email, password) => {
   return async (actor: Actor) => {
-    // Interact with the system the way you like (Selenium, API call or whatever)
-    return userId // the ID assigned to the user on sign-up
+    // Just a dummy implementation for now - we'll come back and flesh this out later
+    return '42'
   }
 }
 ```
 
-Now you can use the interaction in your step definitions:
+Back in the step definition we can now import this interaction:
 
 ```typescript
-const userId = await actor.attemptsTo(signUp('someone@example.com', 'some-secret-password'))
+import { logIn } from '../support/interactions/logIn'
+
+When('{actor} logs in', async function (actor: Actor) {
+  const userId = await actor.attemptsTo(logIn(`${actor.name}@test.com`, 'valid-password'))
+})
 ```
 
-(In this example your `Interation` returns a `Promise<string>`. If your system is fully synchronous, you don't
-need to return a `Promise`).
+#### Interactions and Questions
+
+In addition to `Actor#attemptsTo` there is also an `Actor#ask` method. It has exactly the same signature
+and behaviour as `Actor#attemptsTo`. It often makes your code more readable if you use `Actor#attemptsTo`
+in your `When` step definitions that *modify* system state, and `Actor#ask` in `Then` step definitions
+that *query* system state.
+
+For example:
+
+```typescript
+export type ReceivedMessages = () => Interaction<readonly string[]>
+
+export const receivedMessages: ReceivedMessages = (userId) => {
+  return (actor: Actor) => {
+    return ['hello', 'world'] 
+  }
+}
+```
+
+And in the step definition:
+
+```typescript
+import { logIn } from '../support/interactions/logIn'
+
+Then('{actor} should have received the following messages:', function (actor: Actor, expectedMessages: DataTable) {
+  const receivedMessages = actor.ask(receivedMessages())
+  assert.deepStrictEqual(receivedMessages, expectedMessages.rows.map(row => row[0]))
+})
+```
 
 ### Using different interaction implementations
 
@@ -138,20 +159,21 @@ It can often be useful to have multiple implementations of the same interaction.
 to build new functionality incrementally with fast feedback.
 
 For example, you might be working on a new requirement that allows users to log in. You can start
-by building just the server side domain logic without any HTTP or UI, and get quick feedback as you progress.
+by building just the server side domain logic before you implement any of the HTTP layer or UI around it and get 
+quick feedback as you progress.
 
-Then, you can run the same scenarios again, but this time swapping out your interactions with implementations
+Later, you can run the same scenarios again, but this time swapping out your interactions with implementations
 that make HTTP requests or interact with a DOM - without changing any code.
 
 If you look at the [shouty example included in this repo](./features), you will see that we organized 
-our interactions/questions in two directories:
+our interactions in two directories:
 
 ```
 features
 ├── hear_shout.feature
 └── support
     └── interactions
-        ├── direct
+        ├── dom
         │   ├── inboxMessages.ts
         │   ├── moveTo.ts
         │   └── shout.ts
@@ -161,16 +183,13 @@ features
             └── shout.ts
 ```
 
-In order to decide at run-time what interaction implementations to use, you can use the *interaction loader* provided in `@cucumber/screenplay`:
+In order to decide at run-time what interaction implementations to use, you can use the *interaction loader* provided 
+in `@cucumber/screenplay`:
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
 import { ActorWorld, makeInteractionLoader, defineActorParameterType, Interaction } from '@cucumber/screenplay'
-
-// Declare interaction signatures
-type StartSession = (coordinate: Coordinate) => Interaction<Promise<void>>
-type Shout = (message: string) => Interaction
-type InboxMessages = () => Interaction<readonly Message[]>
+import { InboxMessages, Shout, StartSession } from './interactions/types'
 
 export default class World extends ActorWorld {
   public startSession: StartSession
@@ -189,9 +208,11 @@ Before(async function (this: World) {
 })
 ```
 
-This will load the appropriate interations based on the value of the `CUCUMBER_SCREENPLAY_INTERACTIONS` environment variable.
+The `await interaction(...)` calls will load the interation implementation from one of the two directories based on 
+the value of the `CUCUMBER_SCREENPLAY_INTERACTIONS` environment variable.
 
-If you're using this technique, you also need to adapt your step definitions to reference interactions from the *world* (`this`):
+If you're using this technique, you also need to adapt your step definitions to reference interactions from the 
+*world* (`this`):
 
 ```typescript
 When('{actor} shouts {string}', async function (this: World, actor: Actor, message: string) {
@@ -204,12 +225,12 @@ When('{actor} shouts {string}', async function (this: World, actor: Actor, messa
 Your actors have the abililty to `remember` and `recall` data between steps. For example:
 
 ```typescript
-When('{actor} logs in', function (this: World, actor: Actor<World>) {
-  const userId = actor.attemptsTo(this.login())
+When('{actor} logs in', async function (actor: Actor<World>) {
+  const userId = await actor.attemptsTo(logIn(`${actor.name}@test.com`, 'valid-password'))
   actor.remember('userId', userId)
 })
 
-Then('{actor} should be logged in', function (actor: Actor<World>) {
+Then('{actor} should be logged in', function (actor: Actor) {
   assert.ok(actor.recall('userId'))
 })
 ```
@@ -231,8 +252,8 @@ each scenario, so you won't be able to `recall` anything from previous scenarios
 
 ### Accessing the world from actors
 
-If your interactions need to access data in the `world`, they can do so via the `Actor#world` property. If you're doing this
-you should also declare the generic type of the actor in the interaction implementation:
+If your interactions need to access data in the `world`, they can do so via the `Actor#world` property. If you're 
+doing this you should also declare the generic type of the actor in the interaction implementation:
 
 ```typescript
 export const moveTo: MoveTo = (coordinate) => {
@@ -243,12 +264,12 @@ export const moveTo: MoveTo = (coordinate) => {
 }
 ```
 
-### Handling asynchronous behaviour
+### Asynchronous behaviour and eventual consistency
 
 In a distributed system it may take some time before the outcome of an action propagates around the whole system.
 
 For example, in a chat application, when one user sends a message, it may take a few milliseconds before the 
-other users receive the message, because it travels through a network.
+other users receive the message, because it travels through a network, even when it's all on your machine.
 
 In cases like this you can use the `eventually` function to periodically check for a specific condition:
 
@@ -264,11 +285,11 @@ Then('{actor} hears {actor}’s message', async function (this: World, listener:
 ```
 
 The `eventually` function accepts a single argument - a zero argument `condition` function. If the `condition` function 
-throws an error, it will be called again at a regular `interval` until it passes without throwing an exception. If it doesn't
-pass or finish within a `timeout` period, a timeout error is thrown.
+throws an error, it will be called again at a regular `interval` until it passes without throwing an exception. 
+If it doesn't pass or finish within a `timeout` period, a timeout error is thrown.
 
 The default `interval` is `50ms` and the default `timeout` is `1000ms`. This can be overridden with a second 
-`{ interval: number, timeout: number}` argument after the `condition`.
+`{ interval: number, timeout: number }` argument after the `condition`.
 
 ## Advanced Configuration
 
@@ -278,10 +299,7 @@ Below are some guidelines for more advanced configuration.
 
 The default type of an `Interaction` is `void`. If your system is asynchronous
 (i.e. uses `async` functions that return a `Promise`), you can use the `PromiseInteraction`
-type instead of `Interaction`:
-
-
-
+type instead of `Interaction`.
 
 ### Using an explicit ActorLookup
 
