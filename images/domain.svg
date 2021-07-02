@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 516 872.6274169979695" width="516" height="872.6274169979695">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 516 1072.6274169979695" width="516" height="1072.6274169979695">
   <defs>
     <style type="text/css"><![CDATA[
 text {
@@ -38,18 +38,22 @@ https://davidmathlogic.com/colorblind/#%23648FFF-%23785EF0-%23DC267F-%23FE6100-%
     ]]></style>
   </defs>
   <g stroke-width="16" transform="translate(8, 11.313708498984761)" class="test">
-    <path d="M 0 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 0 150 l 0 50 l -50 0 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l -50 0 z" />
-    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">Actor</text>
+    <path d="M 0 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 0 150 l -50 0 l -50 0 l -50 0 l -50 0 l -50 50 l -50 -50 l -50 0 l -50 0 l -50 0 l -50 0 z" />
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">StepDefinition</text>
   </g>
   <g stroke-width="16" transform="translate(8, 211.31370849898477)" class="test">
+    <path d="M 0 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 50 l 50 -50 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 0 150 l 0 50 l -50 0 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l -50 0 z" />
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">Actor</text>
+  </g>
+  <g stroke-width="16" transform="translate(8, 411.31370849898474)" class="test">
     <path d="M 0 50 l 50 0 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 z" />
     <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">SessionInteraction</text>
   </g>
-  <g stroke-width="16" transform="translate(8, 411.31370849898474)" class="test">
+  <g stroke-width="16" transform="translate(8, 611.3137084989847)" class="test">
     <path d="M 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 150 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 z" />
     <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">DomainSession</text>
   </g>
-  <g stroke-width="16" transform="translate(8, 611.3137084989847)" class="production">
+  <g stroke-width="16" transform="translate(8, 811.3137084989847)" class="production">
     <path d="M 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 z" />
     <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">DomainLogic</text>
   </g>
