@@ -133,9 +133,9 @@ that *query* system state.
 For example:
 
 ```typescript
-export type ReceivedMessages = () => Interaction<readonly string[]>
+export type InboxMessages = () => Interaction<readonly string[]>
 
-export const receivedMessages: ReceivedMessages = (userId) => {
+export const inboxMessages: InboxMessages = (userId) => {
   return (actor: Actor) => {
     return ['hello', 'world'] 
   }
@@ -145,10 +145,10 @@ export const receivedMessages: ReceivedMessages = (userId) => {
 And in the step definition:
 
 ```typescript
-import { logIn } from '../support/interactions/logIn'
+import { inboxMessages } from '../support/interactions/inboxMessages'
 
 Then('{actor} should have received the following messages:', function (actor: Actor, expectedMessages: DataTable) {
-  const receivedMessages = actor.ask(receivedMessages())
+  const receivedMessages = actor.ask(inboxMessages())
   assert.deepStrictEqual(receivedMessages, expectedMessages.rows.map(row => row[0]))
 })
 ```
