@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 516 1272.6274169979695" width="516" height="1272.6274169979695">
+  <defs>
+    <style type="text/css"><![CDATA[
+text {
+  font-size: 50px;
+  font-family: sans-serif;
+  font-weight: bold;
+  fill: #000000;
+}
+
+path {
+  stroke: #000000;
+  /*
+  Do not specify stroke-width here.
+  It is specified in Assembly#toSvg because
+  the stroke width is needed to calculate the width
+  and height of the SVG
+  */
+}
+
+/*
+IBM palette for colour-blind people
+https://davidmathlogic.com/colorblind/#%23648FFF-%23785EF0-%23DC267F-%23FE6100-%23FFB000
+*/
+
+.test {
+  fill: #FFB000;
+}
+
+.infrastructure {
+  fill: #DC267F;
+}
+
+.production {
+  fill: #648FFF;
+}
+
+    ]]></style>
+  </defs>
+  <g stroke-width="16" transform="translate(8, 11.313708498984761)" class="test">
+    <path d="M 0 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 0 150 l 0 50 l -50 0 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l -50 0 z" />
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">Actor</text>
+  </g>
+  <g stroke-width="16" transform="translate(8, 211.31370849898477)" class="test">
+    <path d="M 0 50 l 50 0 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 z" />
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">SessionInteraction</text>
+  </g>
+  <g stroke-width="16" transform="translate(8, 411.31370849898474)" class="production">
+    <path d="M 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 150 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 z" />
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">HttpSession</text>
+  </g>
+  <g stroke-width="16" transform="translate(8, 611.3137084989847)" class="infrastructure">
+    <path d="M 0 0 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 0 150 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 z" />
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">Network</text>
+  </g>
+  <g stroke-width="16" transform="translate(8, 811.3137084989847)" class="production">
+    <path d="M 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 150 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 z" />
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">ExpressApp</text>
+  </g>
+  <g stroke-width="16" transform="translate(8, 1011.3137084989847)" class="production">
+    <path d="M 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 z" />
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">DomainLogic</text>
+  </g>
+</svg>

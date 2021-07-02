@@ -2,18 +2,44 @@
 
 [![CI](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml)
 
-This small library is an implementation of the [screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) for
-[cucumber.js](https://github.com/cucumber/cucumber-js/).
+Cucumber Screenplay is a small library for [Cucumber.js](https://github.com/cucumber/cucumber-js/) that enables better 
+acceptance tests (Gherkin Scenarios):
 
-It also enables you to swap in and out different implementations of automation code (*interactions*), so you can run the same scenarios against
-different layers of your system, with different tradeoffs:
+* 🚅 Full-stack acceptance tests that run in **milliseconds**
+* 🔓 Encourages loosely coupled system components that are easier to test in isolation  
+* 🧩 Assembles system components in several ways, so you can optimize for **speed** or **test coverage**
+* 📗 Readable scenarios that describe the **what** instead of the **how** 
+* 🧰 Maintainable automation code
 
-* In-memory - only interact with the system's domain logic (fastest, lowest confidence)
-* HTTP - only interact with the system via a HTTP API (slower, medium confidence)
-* UI - only interact with the system via the UI (slowest, highest confidence)
+The library is an implementation of the [screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/).
 
-Don't be put off by "slowest" here - you will still be able to run 10-100 scenarios *per second* if you automate through the UI
-using [@cucumber/electron](https://github.com/cucumber/cucumber-electron).
+When you use Cucumber Screenplay, your step definitions are typically one-liners:
+
+```typescript
+When('{actor} logs in', function (actor: Actor) {
+  actor.attemptsTo(logIn())
+})
+```
+
+You can provide several implementations of `logIn()` - one that interacts with the user interface, but *also* one that
+interacts with the API layer *underneath* the user interface via direct function calls.
+
+This forces you to avoid UI language in your scenarios like "fill in field" and "click button", because it doesn't make sense to
+do that in an API implementation of the `logIn()` function. Likewise, it forces you to avoid using HTTP language like
+"execute HTTP POST /login", because it doesn't make sense to do this in the UI implementation of the `login()` function.
+
+So you end up with readable scenarios that describe *what* the user can do, not *how* it's done. Your scenarios become
+living documentation that can be understood by everyone on the team.
+
+## Assemblies
+
+With Cucumber Screenplay you can build an acceptance test suite that you can run with multiple configurations. We call
+this *assemblies*. Below are some [assembly diagrams](https://github.com/subsecondtdd/assembly-diagrams#readme) that illustrate
+these different configurations:
+
+| DOM-HTTP-Domain                                | DOM-Domain                           | HTTP-Domain                            | Domain                       |
+| ---------------------------------------------- | ------------------------------------ | ---------------------------------------| ---------------------------- |
+| ![DOM-HTTP-Domain](images/dom-http-domain.svg) | ![DOM-Domain](images/dom-domain.svg) | ![HTTP-Domain](images/http-domain.svg) | ![Domain](images/domain.svg) |
 
 ## Installation
 
@@ -32,8 +58,7 @@ The central concept in `@cucumber/screenplay` is the `Actor`. An actor object re
 system.
 
 In order to access actor objects from your step definitions, you first need to define an `{actor}` 
-[parameter type](https://cucumber.io/docs/cucumber/cucumber-expressions/#parameter-types). `@cucumber/screenplay`
-provides some utilities to do this.
+[parameter type](https://cucumber.io/docs/cucumber/cucumber-expressions/#parameter-types). 
 
 Create a file called `features/support/World.ts` (if you haven't already got one) and add the following code: 
 
@@ -62,42 +87,13 @@ Then('{actor} should hear nothing', async function (actor: Actor) {
 })
 ```
 
-#### Using an explicit ActorLookup
-
-If you cannot extend `ActorWorld`, you can add an `ActorLookup` field to your existing world class like so:
-
-```typescript
-import { ActorLookup } from '@cucumber/screenplay'
-
-class World {
-  private readonly actorLookUp = new ActorLookup()
-
-  public findOrCreateActor(actorName: string): Actor<World> {
-    return this.actorLookUp.findOrCreateActor(this, actorName)
-  }
-}
-```
-
-#### Overriding ActorParameterType options
-
-The `defineParameterType(ActorParameterType)` function call defines a parameter type named `{actor}` by default, 
-and it uses the RegExp `/[A-Z][a-z]+/` (a capitailsed string).
-
-If you want to use a different name or regexp, you can override these defaults:
-
-```typescript
-defineParameterType({ ...ActorParameterType, name: 'acteur' })
-defineParameterType({ ...ActorParameterType, regexp: /Marcel|Bernadette|Hubert/ })
-defineParameterType({ ...ActorParameterType, name: 'acteur', regexp: /Marcel|Bernadette|Hubert/ })
-```
-
 ### Interacting with the system
 
-Now that you have an `Actor` object, you can use it to interact with the system under test. To do so, the `Actor` has 
-two methods: `attemptsTo` and `ask`.
+Now that your step definitions can be passed `Actor` objects, you can use `Actor#attemptsTo` and `Actor#ask` methods
+to interact with the system.
 
-Both methods are technically synonymous, but it adds some clarity to use `attemptsTo` to perform an action 
-that modifies the state of the system, and `ask` to query the system for information. For example:
+The `Actor#attemptsTo` and `Actor#ask` methods are technically synonymous, but it adds some clarity to use `attemptsTo` 
+to perform an action that modifies the state of the system, and `ask` to query the system for information. For example:
 
 ```typescript
 When('{actor} logs in', function (actor: Actor) {
@@ -114,13 +110,14 @@ Then('{actor} should be logged-in', function (actor: Actor<World>) {
 The `Actor#attemptsTo` and `Actor#ask` methods accept a single `Interaction` argument that describes how to perform
 an action (or ask a question).
 
-Interactions are simply functions that return a function that takes an `Actor` parameter. For example:
+Interactions are simply functions that return another function that expects an `Actor` parameter. For example:
 
 ```typescript
-export default function signUp(email: string, password: string) {
-  return function (actor: Actor<World>): string {
-    // Interact with the system the way you like (Selenium, API call or whatever)
+export type SignUp = (email: string, password: string) => Interaction<Promise<string>>
 
+export const signUp: SignUp = (email, password) => {
+  return async (actor: Actor) => {
+    // Interact with the system the way you like (Selenium, API call or whatever)
     return userId // the ID assigned to the user on sign-up
   }
 }
@@ -131,6 +128,9 @@ Now you can use the interaction in your step definitions:
 ```typescript
 const userId = await actor.attemptsTo(signUp('someone@example.com', 'some-secret-password'))
 ```
+
+(In this example your `Interation` returns a `Promise<string>`. If your system is fully synchronous, you don't
+need to return a `Promise`).
 
 ### Using different interaction implementations
 
@@ -270,7 +270,49 @@ pass or finish within a `timeout` period, a timeout error is thrown.
 The default `interval` is `50ms` and the default `timeout` is `1000ms`. This can be overridden with a second 
 `{ interval: number, timeout: number}` argument after the `condition`.
 
-### Design recommendations
+## Advanced Configuration
+
+Below are some guidelines for more advanced configuration.
+
+### Using Promises
+
+The default type of an `Interaction` is `void`. If your system is asynchronous
+(i.e. uses `async` functions that return a `Promise`), you can use the `PromiseInteraction`
+type instead of `Interaction`:
+
+
+
+
+### Using an explicit ActorLookup
+
+If you cannot extend `ActorWorld`, you can add an `ActorLookup` field to your existing world class like so:
+
+```typescript
+import { ActorLookup } from '@cucumber/screenplay'
+
+class World {
+  private readonly actorLookUp = new ActorLookup()
+
+  public findOrCreateActor(actorName: string): Actor<World> {
+    return this.actorLookUp.findOrCreateActor(this, actorName)
+  }
+}
+```
+
+### Overriding ActorParameterType options
+
+The `defineParameterType(ActorParameterType)` function call defines a parameter type named `{actor}` by default,
+and it uses the RegExp `/[A-Z][a-z]+/` (a capitailsed string).
+
+If you want to use a different name or regexp, you can override these defaults:
+
+```typescript
+defineParameterType({ ...ActorParameterType, name: 'acteur' })
+defineParameterType({ ...ActorParameterType, regexp: /Marcel|Bernadette|Hubert/ })
+defineParameterType({ ...ActorParameterType, name: 'acteur', regexp: /Marcel|Bernadette|Hubert/ })
+```
+
+## Design recommendations
 
 When you're working with `@cucumber/screenplay` and testing against multiple layers, we recommend you use only two
 interaction implementations:

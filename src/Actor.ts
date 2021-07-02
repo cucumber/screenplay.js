@@ -1,4 +1,5 @@
 export type Interaction<Answer = void> = (actor: Actor) => Answer
+export type PromiseInteraction<Answer = void> = (actor: Actor) => Promise<Answer>
 
 export type DefaultFunction<T> = () => T
 
