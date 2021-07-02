@@ -40,6 +40,10 @@ With Cucumber Screenplay you can evolve an acceptance test suite that you can ru
 *assemblies*. The [assembly diagrams](https://github.com/subsecondtdd/assembly-diagrams#readme) below
 illustrate how:
 
+* ![#FFB000](https://via.placeholder.com/15/FFB000/000000?text=+) Test components
+* ![#DC267F](https://via.placeholder.com/15/DC267F/000000?text=+) Infrastructure components
+* ![#648FFF](https://via.placeholder.com/15/648FFF/000000?text=+) Production components
+
 | DOM-HTTP-Domain                                | DOM-Domain                           | HTTP-Domain                            | Domain                       |
 | ---------------------------------------------- | ------------------------------------ | ---------------------------------------| ---------------------------- |
 | ![DOM-HTTP-Domain](images/dom-http-domain.svg) | ![DOM-Domain](images/dom-domain.svg) | ![HTTP-Domain](images/http-domain.svg) | ![Domain](images/domain.svg) |
