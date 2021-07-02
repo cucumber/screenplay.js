@@ -1,6 +1,6 @@
 {
   "name": "@cucumber/screenplay",
-  "version": "1.0.0-next.1",
+  "version": "1.0.0",
   "description": "Utilities to use screenplay pattern easily with Cucumber",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
