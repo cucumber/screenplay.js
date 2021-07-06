@@ -9,12 +9,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* Added automatic loading of interactions if the `interactions` [world parameter](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters) is defined
-* Added `PromiseInteraction` type
-
 ### Changed
 
 ### Deprecated
+
+### Removed
+
+## [2.0.0]
+
+### Added
+
+* Added automatic loading of interactions if the `interactions` [world parameter](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters) is defined
+* Added `PromiseInteraction` type
 
 ### Removed
 
@@ -36,7 +42,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * First release
 
 <!-- Releases -->
-[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v1.0.0...main
+[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v2.0.0...main
+[2.0.0]:      https://github.com/cucumber/screenplay.js/compare/1.0.0...v2.0.0
 [1.0.0]:      https://github.com/cucumber/screenplay.js/compare/0.0.1...v1.0.0
 [0.0.1]:      https://github.com/cucumber/screenplay.js/releases/tag/0.0.1
 
