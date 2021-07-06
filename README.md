@@ -203,9 +203,8 @@ export default class World extends ActorWorld {
 setWorldConstructor(World)
 
 Before(async function (this: World) {
-  this.startSession = await this.interaction('startSession')
-  this.shout = await this.interaction('shout')
-  this.inboxMessages = await this.interaction('inboxMessages')
+  // Loads this.startSession, this.shout and this.inboxMessages
+  await this.loadInteractions()
 })
 ```
 
