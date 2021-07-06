@@ -10,7 +10,7 @@ export default function getSession(actor: Actor<World>): Session {
     // Make sure we stop the session at the end of each scenario
     actor.world.stops.push(() => shoutySession.stop())
 
-    if (process.env.CUCUMBER_SCREENPLAY_SESSIONS === 'http') {
+    if (actor.world.parameters.sessions === 'HttpSession') {
       const httpSession = new HttpSession(shoutySession.userId, new URL(`http://localhost:${actor.world.apiPort}`))
       // Make sure we stop the session at the end of each scenario
       actor.world.stops.push(() => httpSession.stop())

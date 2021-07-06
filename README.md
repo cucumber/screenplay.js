@@ -192,7 +192,7 @@ in `@cucumber/screenplay`:
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
-import { ActorWorld, makeInteractionLoader, defineActorParameterType, Interaction } from '@cucumber/screenplay'
+import { ActorWorld, defineActorParameterType, Interaction } from '@cucumber/screenplay'
 import { InboxMessages, Shout, StartSession } from './interactions/types'
 
 export default class World extends ActorWorld {
@@ -203,17 +203,15 @@ export default class World extends ActorWorld {
 setWorldConstructor(World)
 
 Before(async function (this: World) {
-  const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'session'}`
-  const interaction = makeInteractionLoader(interactionsDir)
-
-  this.startSession = await interaction('startSession')
-  this.shout = await interaction('shout')
-  this.inboxMessages = await interaction('inboxMessages')
+  this.startSession = await this.interaction('startSession')
+  this.shout = await this.interaction('shout')
+  this.inboxMessages = await this.interaction('inboxMessages')
 })
 ```
 
-The `await interaction(...)` calls will load the interation implementation from one of the two directories based on 
-the value of the `CUCUMBER_SCREENPLAY_INTERACTIONS` environment variable.
+The `await this.interaction(...)` calls will load the interation implementation from one of the two directories based on 
+the value of the `interactions` [world parameter](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters),
+defined in the `./cucumber.js` config file.
 
 If you're using this technique, you also need to adapt your step definitions to reference interactions from the 
 *world* (`this`):
@@ -367,5 +365,5 @@ By organising your code this way, you have four ways you can run your Cucumber S
 * `dom` interactions using `ShoutySession` (slower tests, UI + domain layer coverage)
 * `dom` interactions using `HttpSession` (slowest tests, UI + http + domain layer coverage)
 
-In the example we use `CUCUMBER_SCREENPLAY_INTERACTIONS=dom|session` and `CUCUMBER_SCREENPLAY_SESSIONS=http|direct`
+In the example we use [world parameters](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters)
 to control how to interact with the system and how the system is assembled.

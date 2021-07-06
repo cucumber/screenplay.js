@@ -34,12 +34,9 @@ export default class World extends ActorWorld {
 setWorldConstructor(World)
 
 Before(async function (this: World) {
-  const interactionsDir = `${__dirname}/interactions/${process.env.CUCUMBER_SCREENPLAY_INTERACTIONS || 'session'}`
-  const interaction = makeInteractionLoader(interactionsDir)
-
-  this.startSession = await interaction('startSession')
-  this.shout = await interaction('shout')
-  this.inboxMessages = await interaction('inboxMessages')
+  this.startSession = await this.interaction('startSession')
+  this.shout = await this.interaction('shout')
+  this.inboxMessages = await this.interaction('inboxMessages')
 })
 
 Before(async function (this: World) {
@@ -47,7 +44,7 @@ Before(async function (this: World) {
     this.stops.push(async () => this.appElements.destroyAll())
   }
 
-  if (process.env.CUCUMBER_SCREENPLAY_SESSIONS === 'http') {
+  if (this.parameters.sessions === 'HttpSession') {
     const app = makeApp(this.shouty)
 
     await new Promise<void>((resolve, reject) => {
