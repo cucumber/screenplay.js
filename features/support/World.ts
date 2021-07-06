@@ -1,6 +1,6 @@
 import { setWorldConstructor, Before, After, defineParameterType } from '@cucumber/cucumber'
 import { AppElements } from '@cucumber/electron'
-import { ActorWorld, makeInteractionLoader, ActorParameterType } from '../../src/index'
+import { ActorWorld, ActorParameterType } from '../../src/index'
 
 import Shouty from '../src/Shouty'
 import { makeApp } from '../src/server'
@@ -32,10 +32,6 @@ export default class World extends ActorWorld {
 }
 
 setWorldConstructor(World)
-
-Before(async function (this: World) {
-  await this.loadInteractions()
-})
 
 Before(async function (this: World) {
   if (!process.env.KEEP_DOM) {

@@ -7,10 +7,11 @@
 import { Interaction } from './Actor'
 
 export default function (interactionsDir: string): InteractionLoader {
-  return async function interaction<T>(name): Promise<T> {
+  return function interaction<T>(name): T {
     const path = `${interactionsDir}/${name}`
     try {
-      const interaction = await import(path)
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const interaction = require(path)
       return interaction[name] as T
     } catch (err) {
       // @ts-ignore
