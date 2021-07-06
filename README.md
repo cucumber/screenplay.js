@@ -11,8 +11,7 @@ acceptance tests (Gherkin Scenarios):
 * 📗 Readable scenarios that describe the **what** instead of the **how** 
 * 🧰 Maintainable automation code
 
-The library is an implementation of the 
-[screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/).
+This library is inspired by [Serenity/JS](https://serenity-js.org) [Screenplay Pattern](https://serenity-js.org/handbook/thinking-in-serenity-js/screenplay-pattern.html), as [interpreted by Matt Wynne](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/).
 
 When you use Cucumber Screenplay, your step definitions are typically one-liners:
 
