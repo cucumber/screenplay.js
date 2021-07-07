@@ -1,8 +1,8 @@
-# @cucumber/screenplay
+# @cucumber/playwright
 
-[![CI](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml)
+[![CI](https://github.com/cucumber/playwright.js/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber/playwright.js/actions/workflows/ci.yml)
 
-Cucumber Screenplay is a small library for [Cucumber.js](https://github.com/cucumber/cucumber-js/) that enables better 
+Cucumber Playwright is a small library for [Cucumber.js](https://github.com/cucumber/cucumber-js/) that enables better 
 acceptance tests (Gherkin Scenarios):
 
 * 🚅 Full-stack acceptance tests that run in **milliseconds**
@@ -11,10 +11,9 @@ acceptance tests (Gherkin Scenarios):
 * 📗 Readable scenarios that describe the **what** instead of the **how** 
 * 🧰 Maintainable automation code
 
-The library is an implementation of the 
-[screenplay pattern](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/).
+See the [credits](#credits) section for details about prior work that inspired this library.
 
-When you use Cucumber Screenplay, your step definitions are typically one-liners:
+When you use Cucumber Playwright, your step definitions are typically one-liners:
 
 ```typescript
 When('{actor} logs in successfully', async function (actor: Actor) {
@@ -36,7 +35,7 @@ the team.
 
 ## Assemblies
 
-With Cucumber Screenplay you can evolve an acceptance test suite that you can run with multiple configurations, or 
+With Cucumber Playwright you can evolve an acceptance test suite that you can run with multiple configurations, or 
 *assemblies*. The [assembly diagrams](https://github.com/subsecondtdd/assembly-diagrams#readme) below
 illustrate how:
 
@@ -52,16 +51,16 @@ illustrate how:
 
 First, add the library to your project:
 
-    npm install @cucumber/screenplay --save-dev
+    npm install @cucumber/playwright --save-dev
 
 ## Usage
 
-This guide will walk you through the usage of the `@cucumber/screenplay` step by step. For a full example, please refer 
+This guide will walk you through the usage of the `@cucumber/playwright` step by step. For a full example, please refer 
 to the files in the `features` directory (which are also acceptance tests for this library).
 
 ### Actors
 
-The central concept in `@cucumber/screenplay` is the `Actor`. An actor object represents a user interacting with the
+The central concept in `@cucumber/playwright` is the `Actor`. An actor object represents a user interacting with the
 system.
 
 In order to access actor objects from your step definitions, you first need to define an `{actor}` 
@@ -71,7 +70,7 @@ Create a file called `features/support/World.ts` (if you haven't already got one
 
 ```typescript
 import { defineParameterType, setWorldConstructor } from '@cucumber/cucumber'
-import { ActorWorld, ActorParameterType } from '@cucumber/screenplay'
+import { ActorWorld, ActorParameterType } from '@cucumber/playwright'
 
 // Define an {actor} parameter type that creates Actor objects
 defineParameterType(ActorParameterType)
@@ -188,11 +187,11 @@ features
 ```
 
 In order to decide at run-time what interaction implementations to use, you can use the *interaction loader* provided 
-in `@cucumber/screenplay`:
+in `@cucumber/playwright`:
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
-import { ActorWorld, defineActorParameterType, Interaction } from '@cucumber/screenplay'
+import { ActorWorld, defineActorParameterType, Interaction } from '@cucumber/playwright'
 import { InboxMessages, Shout, StartSession } from './interactions/types'
 
 export default class World extends ActorWorld {
@@ -307,7 +306,7 @@ type instead of `Interaction`.
 If you cannot extend `ActorWorld`, you can add an `ActorLookup` field to your existing world class like so:
 
 ```typescript
-import { ActorLookup } from '@cucumber/screenplay'
+import { ActorLookup } from '@cucumber/playwright'
 
 class World {
   private readonly actorLookUp = new ActorLookup()
@@ -333,7 +332,7 @@ defineParameterType({ ...ActorParameterType, name: 'acteur', regexp: /Marcel|Ber
 
 ## Design recommendations
 
-When you're working with `@cucumber/screenplay` and testing against multiple layers, we recommend you use only two
+When you're working with `@cucumber/playwright` and testing against multiple layers, we recommend you use only two
 interaction implementations:
 
 * `dom` for interactions that use the DOM
@@ -366,3 +365,15 @@ By organising your code this way, you have four ways you can run your Cucumber S
 
 In the example we use [world parameters](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters)
 to control how to interact with the system and how the system is assembled.
+
+## Credits
+
+This library is inspired by the *Playwright* pattern.
+
+* [Beyond Page Objects: Next Generation Test Automation with Serenity and the Playwright Pattern](https://www.infoq.com/articles/Beyond-Page-Objects-Test-Automation-Serenity-Playwright/) by Andy Palmer, Antony Marcano, John Ferguson Smart and Jan Molak
+* [Serenity/JS](https://serenity-js.org) - the first JavaScript/TypeScript implementation of the Playwright pattern by Jan Molak
+* [Playwright Pattern](https://serenity-js.org/handbook/thinking-in-serenity-js/Playwright-pattern.html) as described by Jan Molak
+* [Understanding Playwright](https://cucumber.io/blog/bdd/understanding-Playwright-(part-1)/) - blog series by Matt Wynne
+
+This library aims to provide a gentler learning curve than the original Playwright pattern, so some concepts like
+*abilities* and *tasks* have been left out.

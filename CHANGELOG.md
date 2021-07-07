@@ -42,10 +42,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * First release
 
 <!-- Releases -->
-[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v2.0.0...main
-[2.0.0]:      https://github.com/cucumber/screenplay.js/compare/1.0.0...v2.0.0
-[1.0.0]:      https://github.com/cucumber/screenplay.js/compare/0.0.1...v1.0.0
-[0.0.1]:      https://github.com/cucumber/screenplay.js/releases/tag/0.0.1
+[Unreleased]: https://github.com/cucumber/playwright.js/compare/v2.0.0...main
+[2.0.0]:      https://github.com/cucumber/playwright.js/compare/1.0.0...v2.0.0
+[1.0.0]:      https://github.com/cucumber/playwright.js/compare/0.0.1...v1.0.0
+[0.0.1]:      https://github.com/cucumber/playwright.js/releases/tag/0.0.1
 
 <!-- Contributors in alphabetical order -->
 [aslakhellesoy]:    https://github.com/aslakhellesoy

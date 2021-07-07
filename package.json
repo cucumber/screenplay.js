@@ -1,7 +1,7 @@
 {
-  "name": "@cucumber/screenplay",
+  "name": "@cucumber/playwright",
   "version": "2.0.0",
-  "description": "Utilities to use screenplay pattern easily with Cucumber",
+  "description": "Write better scenarios with Cucumber.js",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "dependencies": {},
@@ -63,20 +63,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cucumber/screenplay.js.git"
+    "url": "git+https://github.com/cucumber/playwright.js.git"
   },
   "keywords": [
     "testing",
     "bdd",
     "cucumber",
-    "screenplay"
+    "Playwright"
   ],
   "author": "Cucumber Team",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cucumber/screenplay.js/issues"
+    "url": "https://github.com/cucumber/playwright.js/issues"
   },
-  "homepage": "https://github.com/cucumber/screenplay.js#readme",
+  "homepage": "https://github.com/cucumber/playwright.js#readme",
   "prettier": {
     "trailingComma": "es5",
     "semi": false,
