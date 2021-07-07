@@ -11,11 +11,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-* Renamed the library to `@cucumber/playwright` [#29](https://github.com/cucumber/screenplay.js/pull/)
-
 ### Deprecated
 
 ### Removed
+
+## [3.0.0]
+
+### Changed
+
+* Renamed the library to `@cucumber/playwright` [#29](https://github.com/cucumber/screenplay.js/pull/29)
 
 ## [2.0.0]
 
@@ -44,7 +48,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * First release
 
 <!-- Releases -->
-[Unreleased]: https://github.com/cucumber/playwright.js/compare/v2.0.0...main
+[Unreleased]: https://github.com/cucumber/playwright.js/compare/v3.0.0...main
+[3.0.0]:      https://github.com/cucumber/playwright.js/compare/v2.0.0...v3.0.0
 [2.0.0]:      https://github.com/cucumber/playwright.js/compare/v1.0.0...v2.0.0
 [1.0.0]:      https://github.com/cucumber/playwright.js/compare/0.0.1...v1.0.0
 [0.0.1]:      https://github.com/cucumber/playwright.js/releases/tag/0.0.1
