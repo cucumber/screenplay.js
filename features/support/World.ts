@@ -25,7 +25,7 @@ export default class World extends ActorWorld {
 
   public readonly appElements = new AppElements()
 
-  // Screenplay Interactions
+  // Playwright Interactions
   public startSession: StartSession
   public shout: Shout
   public inboxMessages: InboxMessages

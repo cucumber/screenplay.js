@@ -4,7 +4,7 @@ export type PromiseInteraction<Answer = void> = (actor: Actor) => Promise<Answer
 export type DefaultFunction<T> = () => T
 
 /**
- * An Actor as defined by the ScreenPlay pattern
+ * An Actor represents a user interacting with the system.
  */
 export default class Actor<World = unknown> {
   private readonly memory = new Map<string, unknown>()
