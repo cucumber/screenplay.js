@@ -7,16 +7,21 @@ export default class Shouty {
   private readonly sessionByUserId = new Map<string, ShoutySession>()
 
   makeSession(userId: string): Session {
-    if (!this.sessionByUserId.has(userId)) {
+    let session = this.sessionByUserId.get(userId)
+    if (!session) {
       const inbox = new Inbox()
-      const shoutySession = new ShoutySession(userId, inbox, this)
-      this.sessionByUserId.set(userId, shoutySession)
+      session = new ShoutySession(userId, inbox, this)
+      this.sessionByUserId.set(userId, session)
     }
-    return this.sessionByUserId.get(userId)
+    return session
   }
 
   getSession(userId: string): ShoutySession {
-    return this.sessionByUserId.get(userId)
+    const session = this.sessionByUserId.get(userId)
+    if (!session) {
+      throw new Error(`No session for userId=${userId}`)
+    }
+    return session
   }
 
   broadcast(fromSession: ShoutySession, message: Message) {

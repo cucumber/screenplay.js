@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "rootDir": ".",
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true
   },
-  "include": ["src", "test", "features"],
+  "include": ["src", "test", "features"]
 }

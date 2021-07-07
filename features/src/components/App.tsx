@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Message, Session } from '../types'
+import { Message, MessageListener, Session } from '../types'
 
 type Props = {
   session: Session
@@ -14,7 +14,7 @@ const App: React.FunctionComponent<Props> = ({ session }) => {
   const { inbox } = session
 
   useEffect(() => {
-    const listener = (message) => setMessages(messages.concat([message]))
+    const listener: MessageListener = (message) => setMessages(messages.concat([message]))
     inbox.on(listener)
     session
       .start()
@@ -26,7 +26,7 @@ const App: React.FunctionComponent<Props> = ({ session }) => {
     }
   }, [session, inbox, messages])
 
-  const onShout = (e) => {
+  const onShout: React.FormEventHandler = (e) => {
     e.preventDefault()
     session.send(message).catch((error) => setError(error))
   }
