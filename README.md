@@ -29,7 +29,7 @@ sense to do that in a `logIn` implementation that isn't using the UI. Likewise, 
 language like "execute HTTP POST /login", because it doesn't make sense to do this in the `logIn` implementation that 
 uses the UI.
 
-These constraints encourage you to write *readable* scenarios that describe *what users can do* rahter than 
+These constraints encourage you to write *readable* scenarios that describe *what users can do* rather than 
 *how your system is implemented*. Your scenarios become living documentation that can be understood by everyone on 
 the team.
 
