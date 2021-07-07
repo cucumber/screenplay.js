@@ -368,12 +368,12 @@ to control how to interact with the system and how the system is assembled.
 
 ## Credits
 
-This library is inspired by the *Playwright* pattern.
+This library is inspired by the *Screenplay Pattern*.
 
 * [Beyond Page Objects: Next Generation Test Automation with Serenity and the Playwright Pattern](https://www.infoq.com/articles/Beyond-Page-Objects-Test-Automation-Serenity-Playwright/) by Andy Palmer, Antony Marcano, John Ferguson Smart and Jan Molak
-* [Serenity/JS](https://serenity-js.org) - the first JavaScript/TypeScript implementation of the Playwright pattern by Jan Molak
-* [Playwright Pattern](https://serenity-js.org/handbook/thinking-in-serenity-js/Playwright-pattern.html) as described by Jan Molak
-* [Understanding Playwright](https://cucumber.io/blog/bdd/understanding-Playwright-(part-1)/) - blog series by Matt Wynne
+* [Serenity/JS](https://serenity-js.org) - the original JavaScript/TypeScript implementation of the Screenplay Pattern by Jan Molak
+* [Screenplay Pattern](https://serenity-js.org/handbook/thinking-in-serenity-js/screenplay-pattern.html) as described by Jan Molak
+* [Understanding Screenplay](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) - blog series by Matt Wynne
 
-This library aims to provide a gentler learning curve than the original Playwright pattern, so some concepts like
+This library aims to provide a gentler learning curve than the original Screenplay Pattern, so some concepts like
 *abilities* and *tasks* have been left out.
