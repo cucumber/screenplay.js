@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* Renamed the library to `@cucumber/playwright` [#29](https://github.com/cucumber/screenplay.js/pull/)
+
 ### Deprecated
 
 ### Removed
