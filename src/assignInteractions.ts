@@ -2,7 +2,7 @@ import makeInteractionLoader from './makeInteractionLoader'
 import { readdirSync } from 'fs'
 import path from 'path'
 
-export default function assignInteractions<T>(thisObj: T, interactionsDir): void {
+export default function assignInteractions<T>(thisObj: T, interactionsDir: string): void {
   const interaction = makeInteractionLoader(interactionsDir)
   const files = readdirSync(interactionsDir)
   for (const file of files) {
@@ -10,7 +10,9 @@ export default function assignInteractions<T>(thisObj: T, interactionsDir): void
     if (match) {
       const ext = match[1]
       const name = path.basename(file, ext)
-      thisObj[name] = interaction(name)
+      Object.defineProperty(thisObj, name, {
+        value: interaction(name),
+      })
     }
   }
 }

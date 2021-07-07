@@ -5,8 +5,6 @@ export type EventuallyOptions = {
   interval?: number
 }
 
-const defaultExpectOptions: EventuallyOptions = { interval: 50, timeout: 1000 }
-
 /**
  * Waits for a condition to eventually pass. The condition may run several times depending on the timeout
  * and interval values of options.
@@ -15,7 +13,7 @@ const defaultExpectOptions: EventuallyOptions = { interval: 50, timeout: 1000 }
  * @param options
  */
 export default function eventually<Result>(condition: Condition<Result>, options?: EventuallyOptions): Promise<Result> {
-  const { interval, timeout } = { ...defaultExpectOptions, ...options }
+  const { interval, timeout } = { interval: 50, timeout: 1000, ...options }
 
   let lastError: Error | undefined = undefined
   let intervalId: NodeJS.Timeout
@@ -60,8 +58,8 @@ export default function eventually<Result>(condition: Condition<Result>, options
 
 // setInterval does not invoke the function immediately, but waits for the first interval.
 // This function makes sure it is called immediately.
-function setIntervalImmediately(fn, interval) {
-  const iv = setInterval(fn, interval)
-  fn()
+function setIntervalImmediately(callback: (...args: unknown[]) => void, ms: number) {
+  const iv = setInterval(callback, ms)
+  callback()
   return iv
 }

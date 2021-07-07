@@ -7,7 +7,7 @@
 import { Interaction } from './Actor'
 
 export default function (interactionsDir: string): InteractionLoader {
-  return function interaction<T>(name): T {
+  return function interaction<T>(name: string): T {
     const path = `${interactionsDir}/${name}`
     try {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
