@@ -47,7 +47,7 @@ illustrate how:
 | ---------------------------------------------- | ------------------------------------ | ---------------------------------------| ---------------------------- |
 | ![DOM-HTTP-Domain](images/dom-http-domain.svg) | ![DOM-Domain](images/dom-domain.svg) | ![HTTP-Domain](images/http-domain.svg) | ![Domain](images/domain.svg) |
 
-Watch a presentation that illustrates the concept of assemblies in more detail:
+Watch Cucumber creator Aslak Hellesøy explain how assemblies can be used to build acceptance tests that run in milliseconds:
 
 [![Watch the video](https://img.youtube.com/vi/AJ7u_Z-TS-A/hq3.jpg)](https://www.youtube.com/watch?v=AJ7u_Z-TS-A)
 
