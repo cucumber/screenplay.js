@@ -89,24 +89,24 @@ When Martha logs in
 
 ```typescript
 When('{actor} logs in', async function (actor: Actor) {
-  // The logIn() function is an Interaction
+  // The logIn() function is a Task
   await actor.attemptsTo(logIn(`${actor.name}@test.com`, 'valid-password'))
 })
 ```
 
-Keep reading to learn how to define *Interactions*.
+Keep reading to learn how to define *Tasks*.
 
 ### Interacting with the system
 
-Now that your step definitions can be passed `Actor` objects, we need to define `Interaction`s that the actor can use
+Now that your step definitions can be passed `Actor` objects, we need to define `Task`s that the actor can use
 to *interact* with the system.
 
-An interaction is a function that returns another function that expects an `Actor` parameter.
+A task is a function that returns another function that expects an `Actor` parameter.
 
-Add the following to `features/support/interactions/logIn.ts`: 
+Add the following to `features/support/tasks/logIn.ts`: 
 
 ```typescript
-type LogIn = (email: string, password: string) => Interaction<Promise<string>>
+type LogIn = (email: string, password: string) => PromiseTask<string>
 
 export const logIn: LogIn = (email, password) => {
   return async (actor: Actor) => {
@@ -116,17 +116,17 @@ export const logIn: LogIn = (email, password) => {
 }
 ```
 
-Back in the step definition we can now import this interaction:
+Back in the step definition we can now import this task:
 
 ```typescript
-import { logIn } from '../support/interactions/logIn'
+import { logIn } from '../support/tasks/logIn'
 
 When('{actor} logs in', async function (actor: Actor) {
   const userId = await actor.attemptsTo(logIn(`${actor.name}@test.com`, 'valid-password'))
 })
 ```
 
-#### Interactions and Questions
+#### Tasks and Questions
 
 In addition to `Actor#attemptsTo` there is also an `Actor#ask` method. It has exactly the same signature
 and behaviour as `Actor#attemptsTo`. It often makes your code more readable if you use `Actor#attemptsTo`
@@ -136,7 +136,7 @@ that *query* system state.
 For example:
 
 ```typescript
-export type InboxMessages = () => Interaction<readonly string[]>
+export type InboxMessages = () => Task<readonly string[]>
 
 export const inboxMessages: InboxMessages = (userId) => {
   return (actor: Actor) => {
@@ -148,7 +148,7 @@ export const inboxMessages: InboxMessages = (userId) => {
 And in the step definition:
 
 ```typescript
-import { inboxMessages } from '../support/interactions/inboxMessages'
+import { inboxMessages } from '../support/tasks/inboxMessages'
 
 Then('{actor} should have received the following messages:', function (actor: Actor, expectedMessages: DataTable) {
   const receivedMessages = actor.ask(inboxMessages())
@@ -156,26 +156,26 @@ Then('{actor} should have received the following messages:', function (actor: Ac
 })
 ```
 
-### Using different interaction implementations
+### Using different task implementations
 
-It can often be useful to have multiple implementations of the same interaction. This allows you
+It can often be useful to have multiple implementations of the same task. This allows you
 to build new functionality incrementally with fast feedback.
 
 For example, you might be working on a new requirement that allows users to log in. You can start
 by building just the server side domain logic before you implement any of the HTTP layer or UI around it and get 
 quick feedback as you progress.
 
-Later, you can run the same scenarios again, but this time swapping out your interactions with implementations
+Later, you can run the same scenarios again, but this time swapping out your tasks with implementations
 that make HTTP requests or interact with a DOM - without changing any code.
 
 If you look at the [shouty example included in this repo](./features), you will see that we organized 
-our interactions in two directories:
+our tasks in two directories:
 
 ```
 features
 ├── hear_shout.feature
 └── support
-    └── interactions
+    └── tasks
         ├── dom
         │   ├── inboxMessages.ts
         │   ├── moveTo.ts
@@ -186,32 +186,34 @@ features
             └── shout.ts
 ```
 
-In order to decide at run-time what interaction implementations to use, you can use the *interaction loader* provided 
-in `@cucumber/playwright`:
+If your `World` class extends from `ActorWorld`, it will automatically load tasks from the directory specified
+by the `tasks` [world parameter](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters):
+
+```
+# Use the dom tasks
+cucumber-js --world-parameters '{ "tasks": "support/tasks/dom" }'
+
+# Use the session tasks
+cucumber-js --world-parameters '{ "tasks": "support/tasks/session" }'
+```
+
+Here is what the `World` looks like:
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
-import { ActorWorld, defineActorParameterType, Interaction } from '@cucumber/playwright'
-import { InboxMessages, Shout, StartSession } from './interactions/types'
+import { ActorWorld, defineActorParameterType, Task } from '@cucumber/playwright'
+import { InboxMessages, Shout, StartSession } from './tasks/types'
 
 export default class World extends ActorWorld {
+  // These tasks will be loaded automatically
   public startSession: StartSession
   public shout: Shout
   public inboxMessages: InboxMessages
 }
 setWorldConstructor(World)
-
-Before(async function (this: World) {
-  // Loads this.startSession, this.shout and this.inboxMessages
-  await this.loadInteractions()
-})
 ```
 
-The `await this.interaction(...)` calls will load the interation implementation from one of the two directories based on 
-the value of the `interactions` [world parameter](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters),
-defined in the `./cucumber.js` config file.
-
-If you're using this technique, you also need to adapt your step definitions to reference interactions from the 
+If you're using this technique, you also need to adapt your step definitions to reference tasks from the 
 *world* (`this`):
 
 ```typescript
@@ -252,8 +254,8 @@ each scenario, so you won't be able to `recall` anything from previous scenarios
 
 ### Accessing the world from actors
 
-If your interactions need to access data in the `world`, they can do so via the `Actor#world` property. If you're 
-doing this you should also declare the generic type of the actor in the interaction implementation:
+If your tasks need to access data in the `world`, they can do so via the `Actor#world` property. If you're 
+doing this you should also declare the generic type of the actor in the task implementation:
 
 ```typescript
 export const moveTo: MoveTo = (coordinate) => {
@@ -297,9 +299,9 @@ Below are some guidelines for more advanced configuration.
 
 ### Using Promises
 
-The default type of an `Interaction` is `void`. If your system is asynchronous
-(i.e. uses `async` functions that return a `Promise`), you can use the `PromiseInteraction`
-type instead of `Interaction`.
+The default type of a `Task` is `void`. If your system is asynchronous
+(i.e. uses `async` functions that return a `Promise`), you can use the `PromiseTask`
+type instead of `Task`.
 
 ### Using an explicit ActorLookup
 
@@ -333,15 +335,15 @@ defineParameterType({ ...ActorParameterType, name: 'acteur', regexp: /Marcel|Ber
 ## Design recommendations
 
 When you're working with `@cucumber/playwright` and testing against multiple layers, we recommend you use only two
-interaction implementations:
+task implementations:
 
-* `dom` for interactions that use the DOM
-* `session` for interactions that use a `Session`
+* `dom` for tasks that use the DOM
+* `session` for tasks that use a `Session`
 
 A `Session` represents a user (actor) having an interactive session with your system. A `Session` will typically be used 
 in two places of your code:
 
-* From your `session` interactions
+* From your `session` tasks
 * From your UI code (React/Vue components etc)
 
 `Session` is an interface that is specific to your implementation that you should implement yourself. Your UI code 
@@ -358,10 +360,10 @@ The `ShoutySession` is an implementation that talks directly to the server side 
 
 By organising your code this way, you have four ways you can run your Cucumber Scenarios.
 
-* `session` interactions using `ShoutySession` (fastest tests, domain layer coverage)
-* `session` interations using `HttpSession` (slower tests, http + domain layer coverage)
-* `dom` interactions using `ShoutySession` (slower tests, UI + domain layer coverage)
-* `dom` interactions using `HttpSession` (slowest tests, UI + http + domain layer coverage)
+* `session` tasks using `ShoutySession` (fastest tests, domain layer coverage)
+* `session` tasks using `HttpSession` (slower tests, http + domain layer coverage)
+* `dom` tasks using `ShoutySession` (slower tests, UI + domain layer coverage)
+* `dom` tasks using `HttpSession` (slowest tests, UI + http + domain layer coverage)
 
 In the example we use [world parameters](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters)
 to control how to interact with the system and how the system is assembled.

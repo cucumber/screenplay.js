@@ -14,7 +14,7 @@ Given('{actor} is online', async function (this: World, actor: Actor<World>) {
 Given(
   '{actor} is located {int}m from {actor}',
   function (this: World, actor1: Actor<World>, distance: number, actor2: Actor<World>) {
-    // We don't use an interaction (actor.attemptsTo) here.
+    // We don't use a task (actor.attemptsTo) here.
 
     const actor1Session = this.shouty.getSession(getSession(actor1).userId)
     const actor2Session = this.shouty.getSession(getSession(actor2).userId)
