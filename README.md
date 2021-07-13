@@ -2,13 +2,13 @@
 
 [![CI](https://github.com/cucumber/playwright.js/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber/playwright.js/actions/workflows/ci.yml)
 
-Cucumber Playwright is a small library for [Cucumber.js](https://github.com/cucumber/cucumber-js/) that enables better 
+Cucumber Playwright is a small library for [Cucumber.js](https://github.com/cucumber/cucumber-js/) that enables better
 acceptance tests (Gherkin Scenarios):
 
 * 🚅 Full-stack acceptance tests that run in **milliseconds**
 * 🔓 Encourages loosely coupled system components that are easier to test in isolation  
 * 🧩 Assembles system components in several ways, so you can optimize for **speed** or **test coverage**
-* 📗 Readable scenarios that describe the **what** instead of the **how** 
+* 📗 Readable scenarios that describe the **what** instead of the **how**
 * 🧰 Maintainable automation code
 
 See the [credits](#credits) section for details about prior work that inspired this library.
@@ -25,17 +25,17 @@ You can provide several implementations of `logIn` - one that interacts with the
 interacts with the API layer *underneath* the user interface via direct function calls or HTTP requests.
 
 This forces you to avoid UI language in your scenarios like "fill in field" and "click button", because it doesn't make
-sense to do that in a `logIn` implementation that isn't using the UI. Likewise, it forces you to avoid using HTTP 
-language like "execute HTTP POST /login", because it doesn't make sense to do this in the `logIn` implementation that 
+sense to do that in a `logIn` implementation that isn't using the UI. Likewise, it forces you to avoid using HTTP
+language like "execute HTTP POST /login", because it doesn't make sense to do this in the `logIn` implementation that
 uses the UI.
 
-These constraints encourage you to write *readable* scenarios that describe *what users can do* rahter than 
-*how your system is implemented*. Your scenarios become living documentation that can be understood by everyone on 
+These constraints encourage you to write *readable* scenarios that describe *what users can do* rahter than
+*how your system is implemented*. Your scenarios become living documentation that can be understood by everyone on
 the team.
 
 ## Assemblies
 
-With Cucumber Playwright you can evolve an acceptance test suite that you can run with multiple configurations, or 
+With Cucumber Playwright you can evolve an acceptance test suite that you can run with multiple configurations, or
 *assemblies*. The [assembly diagrams](https://github.com/subsecondtdd/assembly-diagrams#readme) below
 illustrate how:
 
@@ -47,6 +47,10 @@ illustrate how:
 | ---------------------------------------------- | ------------------------------------ | ---------------------------------------| ---------------------------- |
 | ![DOM-HTTP-Domain](images/dom-http-domain.svg) | ![DOM-Domain](images/dom-domain.svg) | ![HTTP-Domain](images/http-domain.svg) | ![Domain](images/domain.svg) |
 
+Watch Cucumber creator Aslak Hellesøy explain how assemblies can be used to build acceptance tests that run in milliseconds:
+
+[![Watch the video](https://img.youtube.com/vi/AJ7u_Z-TS-A/hq3.jpg)](https://www.youtube.com/watch?v=AJ7u_Z-TS-A)
+
 ## Installation
 
 First, add the library to your project:
@@ -55,7 +59,7 @@ First, add the library to your project:
 
 ## Usage
 
-This guide will walk you through the usage of the `@cucumber/playwright` step by step. For a full example, please refer 
+This guide will walk you through the usage of the `@cucumber/playwright` step by step. For a full example, please refer
 to the files in the `features` directory (which are also acceptance tests for this library).
 
 ### Actors
@@ -63,10 +67,10 @@ to the files in the `features` directory (which are also acceptance tests for th
 The central concept in `@cucumber/playwright` is the `Actor`. An actor object represents a user interacting with the
 system.
 
-In order to access actor objects from your step definitions, you first need to define an `{actor}` 
-[parameter type](https://cucumber.io/docs/cucumber/cucumber-expressions/#parameter-types). 
+In order to access actor objects from your step definitions, you first need to define an `{actor}`
+[parameter type](https://cucumber.io/docs/cucumber/cucumber-expressions/#parameter-types).
 
-Create a file called `features/support/World.ts` (if you haven't already got one) and add the following code: 
+Create a file called `features/support/World.ts` (if you haven't already got one) and add the following code:
 
 ```typescript
 import { defineParameterType, setWorldConstructor } from '@cucumber/cucumber'
@@ -103,7 +107,7 @@ to achieve a particular goal.
 
 A task is a function that returns another function that expects an `Actor` parameter.
 
-Add the following to `features/support/tasks/logIn.ts`: 
+Add the following to `features/support/tasks/logIn.ts`:
 
 ```typescript
 type LogIn = (email: string, password: string) => Action<string>
@@ -155,7 +159,7 @@ export type InboxMessages = () => Action<readonly string[]>
 
 export const inboxMessages: InboxMessages = (userId) => {
   return (actor: Actor) => {
-    return ['hello', 'world'] 
+    return ['hello', 'world']
   }
 }
 ```
@@ -177,7 +181,7 @@ It can often be useful to have multiple implementations of the same task. This a
 to build new functionality incrementally with fast feedback.
 
 For example, you might be working on a new requirement that allows users to log in. You can start
-by building just the server side domain logic before you implement any of the HTTP layer or UI around it and get 
+by building just the server side domain logic before you implement any of the HTTP layer or UI around it and get
 quick feedback as you progress.
 
 Later, you can run the same scenarios again, but this time swapping out your tasks with implementations
@@ -263,7 +267,7 @@ function getSomething(actor: Actor) {
 assert.strictEqual(getSomething(actor), getSomething(actor))
 ```
 
-**Note:** the data remembered is scoped by `Actor`, so you cannot access data remembered by one actor from another 
+**Note:** the data remembered is scoped by `Actor`, so you cannot access data remembered by one actor from another
 one. You can have multiple actors storing different data with the same key. Every `Actor` is discarded at the end of
 each scenario, so you won't be able to `recall` anything from previous scenarios.
 
@@ -285,7 +289,7 @@ export const moveTo: MoveTo = (coordinate) => {
 
 In a distributed system it may take some time before the outcome of an action propagates around the whole system.
 
-For example, in a chat application, when one user sends a message, it may take a few milliseconds before the 
+For example, in a chat application, when one user sends a message, it may take a few milliseconds before the
 other users receive the message, because it travels through a network, even when it's all on your machine.
 
 In cases like this you can use the `eventually` function to periodically check for a specific condition:
@@ -301,11 +305,11 @@ Then('{actor} hears {actor}’s message', async function (this: World, listener:
 })
 ```
 
-The `eventually` function accepts a single argument - a zero argument `condition` function. If the `condition` function 
-throws an error, it will be called again at a regular `interval` until it passes without throwing an exception. 
+The `eventually` function accepts a single argument - a zero argument `condition` function. If the `condition` function
+throws an error, it will be called again at a regular `interval` until it passes without throwing an exception.
 If it doesn't pass or finish within a `timeout` period, a timeout error is thrown.
 
-The default `interval` is `50ms` and the default `timeout` is `1000ms`. This can be overridden with a second 
+The default `interval` is `50ms` and the default `timeout` is `1000ms`. This can be overridden with a second
 `{ interval: number, timeout: number }` argument after the `condition`.
 
 ## Advanced Configuration
@@ -355,13 +359,13 @@ task implementations:
 * `dom` for tasks that use the DOM
 * `session` for tasks that use a `Session`
 
-A `Session` represents a user (actor) having an interactive session with your system. A `Session` will typically be used 
+A `Session` represents a user (actor) having an interactive session with your system. A `Session` will typically be used
 in two places of your code:
 
 * From your `session` tasks
 * From your UI code (React/Vue components etc)
 
-`Session` is an interface that is specific to your implementation that you should implement yourself. Your UI code 
+`Session` is an interface that is specific to your implementation that you should implement yourself. Your UI code
 will use it to interact with the server. This separation of concerns prevents network implementation details to
 bleed into the UI code.
 
