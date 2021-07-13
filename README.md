@@ -89,27 +89,27 @@ When Martha logs in
 
 ```typescript
 When('{actor} logs in', async function (actor: Actor) {
-  // The logIn() function is a Task
+  // The logIn() function is an Action
   await actor.attemptsTo(logIn(`${actor.name}@test.com`, 'valid-password'))
 })
 ```
 
-Keep reading to learn how to define *Tasks*.
+Keep reading to learn how to define *tasks*.
 
-### Interacting with the system
+### Perfoming tasks
 
-Now that your step definitions can be passed `Actor` objects, we need to define `Task`s that the actor can use
-to *interact* with the system.
+Now that your step definitions can be passed `Actor` objects, we need to define *tasks* that the actor can perform
+to achieve a particular goal.
 
 A task is a function that returns another function that expects an `Actor` parameter.
 
 Add the following to `features/support/tasks/logIn.ts`: 
 
 ```typescript
-type LogIn = (email: string, password: string) => PromiseTask<string>
+type LogIn = (email: string, password: string) => Action<string>
 
 export const logIn: LogIn = (email, password) => {
-  return async (actor: Actor) => {
+  return (actor: Actor) => {
     // Just a dummy implementation for now - we'll come back and flesh this out later
     return '42'
   }
@@ -126,6 +126,21 @@ When('{actor} logs in', async function (actor: Actor) {
 })
 ```
 
+#### Tasks and Interactions
+
+You may have noticed that the type of the `LogIn` task above is `Action`, and not `Task`.
+
+The screenplay pattern encourages you to decompose complex tasks into multiple *actions*:
+
+    +------+      0..N  +-------------+
+    | task |----------->| interaction |
+    +------+            +-------------+
+
+In `@cucumber/playwright`, both *tasks* and *actions* are of type `Action`. The library does not
+make a distinction between them, it is up to you how you decompose tasks into interactions.
+
+See [shout.ts](features/support/tasks/dom/shout.ts) for an example of a task that delegates to two interactions.
+
 #### Tasks and Questions
 
 In addition to `Actor#attemptsTo` there is also an `Actor#ask` method. It has exactly the same signature
@@ -136,7 +151,7 @@ that *query* system state.
 For example:
 
 ```typescript
-export type InboxMessages = () => Task<readonly string[]>
+export type InboxMessages = () => Action<readonly string[]>
 
 export const inboxMessages: InboxMessages = (userId) => {
   return (actor: Actor) => {
@@ -201,7 +216,7 @@ Here is what the `World` looks like:
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
-import { ActorWorld, defineActorParameterType, Task } from '@cucumber/playwright'
+import { ActorWorld, defineActorParameterType, Action } from '@cucumber/playwright'
 import { InboxMessages, Shout, StartSession } from './tasks/types'
 
 export default class World extends ActorWorld {
@@ -299,9 +314,9 @@ Below are some guidelines for more advanced configuration.
 
 ### Using Promises
 
-The default type of a `Task` is `void`. If your system is asynchronous
-(i.e. uses `async` functions that return a `Promise`), you can use the `PromiseTask`
-type instead of `Task`.
+The default type of an `Action` is `void`. If your system is asynchronous
+(i.e. uses `async` functions that return a `Promise`), you can use the `PromiseAction`
+type instead of `Action`.
 
 ### Using an explicit ActorLookup
 

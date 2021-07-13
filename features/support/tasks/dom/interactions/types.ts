@@ -1,5 +1,5 @@
-import { Task } from '../../../../../src'
+import { Action } from '../../../../../src'
 import { Message } from '../../../../src/types'
 
-export type ClickShoutButton = () => Task
-export type TypeMessage = (message: Message) => Task
+export type ClickShoutButton = () => Action
+export type TypeMessage = (message: Message) => Action
