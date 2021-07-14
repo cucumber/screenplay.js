@@ -372,12 +372,16 @@ to control how to interact with the system and how the system is assembled.
 
 ## Credits
 
-This library is inspired by the *Screenplay Pattern*.
+This library is inspired by the *Screenplay Pattern*. This list is a chronological order of events, implementations and writings related to the evolution
+of the pattern.
 
-* [Beyond Page Objects: Next Generation Test Automation with Serenity and the Playwright Pattern](https://www.infoq.com/articles/Beyond-Page-Objects-Test-Automation-Serenity-Playwright/) by Andy Palmer, Antony Marcano, John Ferguson Smart and Jan Molak
-* [Serenity/JS](https://serenity-js.org) - the original JavaScript/TypeScript implementation of the Screenplay Pattern by Jan Molak
-* [Screenplay Pattern](https://serenity-js.org/handbook/thinking-in-serenity-js/screenplay-pattern.html) as described by Jan Molak
-* [Understanding Screenplay](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) - blog series by Matt Wynne
-
-This library aims to provide a gentler learning curve than the original Screenplay Pattern, so some concepts like
-*abilities* and *tasks* have been left out.
+* 2007: [In praise of abstraction](https://developertesting.com/archives/month200710/20071013-In%20Praise%20of%20Abstraction.html) - talk by Kevin Lawrence.
+* 2007: Antony Marcano [demonstrates the Journey Pattern](http://www.russmiles.com/essais/on-the-origins-of-the-journey-pattern-in-testing) at the Agile Alliance Functional Test Tools workshop.
+* 2009: Antony Marcano and Andy Palmer showed Aslak Hellesøy the pattern at Agile 2009 in Chicago.
+* 2012: [Screenplay4j](https://bitbucket-archive.softwareheritage.org/projects/te/testingreflections/screenplay4j.html) - the first public implementation by Antony Marcano and Andy Palmer.
+* 2012: [User Centred Scenarios: Describing capabilities, not solutions](https://skillsmatter.com/skillscasts/3141-user-centred-scenarios-describing-capabilities-not-solutions) - talk by Andy Palmer and Antony Marcano where "millisecond acceptance" tests are described towards the end.
+* 2016: [Beyond Page Objects: Next Generation Test Automation with Serenity and the Screenplay Pattern](https://www.infoq.com/articles/Beyond-Page-Objects-Test-Automation-Serenity-Screenplay/) by Andy Palmer, Antony Marcano, John Ferguson Smart and Jan Molak.
+* 2016: [Screenplays and Journeys, Not Page Objects](https://testerstories.com/2016/06/screenplays-and-journeys-not-page-objects/) - blog post by Jeff Nyman
+* 2016: [Serenity/JS](https://serenity-js.org) - the original JavaScript/TypeScript implementation of the Screenplay Pattern by Jan Molak.
+* 2019: [Screenplay Pattern](https://serenity-js.org/handbook/thinking-in-serenity-js/screenplay-pattern.html) as described by Jan Molak.
+* 2020: [Understanding Screenplay](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) - blog series by Matt Wynne.
