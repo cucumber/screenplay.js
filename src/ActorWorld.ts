@@ -1,15 +1,15 @@
 import { World, IWorldOptions } from '@cucumber/cucumber'
 import Actor from './Actor'
 import ActorLookup from './ActorLookup'
-import assignInteractions from './assignInteractions'
+import assignTasks from './assignTasks'
 
 export default class ActorWorld extends World {
   public readonly actorLookup = new ActorLookup()
 
   constructor(props: IWorldOptions) {
     super(props)
-    if (this.parameters.interactions) {
-      assignInteractions(this, this.parameters.interactions)
+    if (this.parameters.tasks) {
+      assignTasks(this, this.parameters.tasks)
     }
   }
 
