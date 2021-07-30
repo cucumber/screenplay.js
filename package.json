@@ -1,5 +1,5 @@
 {
-  "name": "@cucumber/playwright",
+  "name": "@cucumber/screenplay",
   "version": "3.1.0",
   "description": "Write better scenarios with Cucumber.js",
   "main": "dist/src/index.js",
@@ -63,20 +63,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cucumber/playwright.js.git"
+    "url": "git+https://github.com/cucumber/screenplay.js.git"
   },
   "keywords": [
     "testing",
     "bdd",
     "cucumber",
-    "Playwright"
+    "Screenplay"
   ],
   "author": "Cucumber Team",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cucumber/playwright.js/issues"
+    "url": "https://github.com/cucumber/screenplay.js/issues"
   },
-  "homepage": "https://github.com/cucumber/playwright.js#readme",
+  "homepage": "https://github.com/cucumber/screenplay.js#readme",
   "prettier": {
     "trailingComma": "es5",
     "semi": false,
