@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [4.0.0]
+
+### Changed
+
+* Renamed the library back to `@cucumber/screenplay` [#39](https://github.com/cucumber/screenplay.js/pull/39)
+
 ## [3.1.0]
 
 ### Added
@@ -56,12 +62,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * First release
 
 <!-- Releases -->
-[Unreleased]: https://github.com/cucumber/playwright.js/compare/v3.1.0...main
-[3.1.0]:      https://github.com/cucumber/playwright.js/compare/v3.0.0...v3.1.0
-[3.0.0]:      https://github.com/cucumber/playwright.js/compare/v2.0.0...v3.0.0
-[2.0.0]:      https://github.com/cucumber/playwright.js/compare/v1.0.0...v2.0.0
-[1.0.0]:      https://github.com/cucumber/playwright.js/compare/0.0.1...v1.0.0
-[0.0.1]:      https://github.com/cucumber/playwright.js/releases/tag/0.0.1
+[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v3.1.0...main
+[4.0.0]:      https://github.com/cucumber/screenplay.js/compare/v3.1.0...v4.0.0
+[3.1.0]:      https://github.com/cucumber/screenplay.js/compare/v3.0.0...v3.1.0
+[3.0.0]:      https://github.com/cucumber/screenplay.js/compare/v2.0.0...v3.0.0
+[2.0.0]:      https://github.com/cucumber/screenplay.js/compare/v1.0.0...v2.0.0
+[1.0.0]:      https://github.com/cucumber/screenplay.js/compare/0.0.1...v1.0.0
+[0.0.1]:      https://github.com/cucumber/screenplay.js/releases/tag/0.0.1
 
 <!-- Contributors in alphabetical order -->
 [aslakhellesoy]:    https://github.com/aslakhellesoy
