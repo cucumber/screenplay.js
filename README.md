@@ -132,15 +132,21 @@ When('{actor} logs in', async function (actor: Actor) {
 
 #### Tasks and Interactions
 
-You may have noticed that the type of the `LogIn` task above is `Action`, and not `Task`.
+The screenplay pattern encourages you to decompose complex tasks into multiple *interaction*:
 
-The screenplay pattern encourages you to decompose complex tasks into multiple *actions*:
 
-    +------+      0..N  +-------------+
-    | task |----------->| interaction |
-    +------+            +-------------+
+                             +--------+
+                             | Action |
+                             +--------+
+                                  ^
+                                  |
+                        +---------+---------+
+                        |                   |
+    +-------+       +---+--+          +-----+-------+
+    | actor |------>| task |--------->| interaction |
+    +-------+       +------+    0..N  +-------------+
 
-In `@cucumber/playwright`, both *tasks* and *actions* are of type `Action`. The library does not
+In `@cucumber/screenplay`, both *tasks* and *interactions* are of type `Action`. The library does not
 make a distinction between them, it is up to you how you decompose tasks into interactions.
 
 See [shout.ts](features/support/tasks/dom/shout.ts) for an example of a task that delegates to two interactions.
@@ -187,7 +193,7 @@ quick feedback as you progress.
 Later, you can run the same scenarios again, but this time swapping out your tasks with implementations
 that make HTTP requests or interact with a DOM - without changing any code.
 
-If you look at the [shouty example included in this repo](./features), you will see that we organized 
+If you look at the [shouty example included in this repo](./features), you will see that we organized
 our tasks in two directories:
 
 ```
@@ -220,7 +226,7 @@ Here is what the `World` looks like:
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
-import { ActorWorld, defineActorParameterType, Action } from '@cucumber/playwright'
+import { ActorWorld, defineActorParameterType, Action } from '@cucumber/screenplay'
 import { InboxMessages, Shout, StartSession } from './tasks/types'
 
 export default class World extends ActorWorld {
@@ -232,7 +238,7 @@ export default class World extends ActorWorld {
 setWorldConstructor(World)
 ```
 
-If you're using this technique, you also need to adapt your step definitions to reference tasks from the 
+If you're using this technique, you also need to adapt your step definitions to reference tasks from the
 *world* (`this`):
 
 ```typescript
@@ -273,7 +279,7 @@ each scenario, so you won't be able to `recall` anything from previous scenarios
 
 ### Accessing the world from actors
 
-If your tasks need to access data in the `world`, they can do so via the `Actor#world` property. If you're 
+If your tasks need to access data in the `world`, they can do so via the `Actor#world` property. If you're
 doing this you should also declare the generic type of the actor in the task implementation:
 
 ```typescript
