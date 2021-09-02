@@ -7,31 +7,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ----
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.0.0] - 2021-07-02
+
 ### Changed
 
 * Rename the `Interaction` type to `Action`.
 * Explain that *tasks* can be decomposed into multiple *interactions*, and that
   they are both of type `Action`.
 
-## [4.0.0]
+## [4.0.0] - 2021-07-30
 
 ### Changed
 
 * Renamed the library back to `@cucumber/screenplay` [#39](https://github.com/cucumber/screenplay.js/pull/39)
 
-## [3.1.0]
+## [3.1.0] - 2021-07-07
 
 ### Added
 
 * Expose `eventually` function
 
-## [3.0.0]
+## [3.0.0] - 2021-07-07
 
 ### Changed
 
 * Renamed the library to `@cucumber/playwright` [#29](https://github.com/cucumber/screenplay.js/pull/29)
 
-## [2.0.0]
+## [2.0.0] - 2021-07-06
 
 ### Added
 
@@ -58,7 +70,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * First release
 
 <!-- Releases -->
-[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v3.1.0...main
+[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.0.0...main
+[5.0.0]:      https://github.com/cucumber/screenplay.js/compare/v4.0.0...v5.0.0
 [4.0.0]:      https://github.com/cucumber/screenplay.js/compare/v3.1.0...v4.0.0
 [3.1.0]:      https://github.com/cucumber/screenplay.js/compare/v3.0.0...v3.1.0
 [3.0.0]:      https://github.com/cucumber/screenplay.js/compare/v2.0.0...v3.0.0
