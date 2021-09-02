@@ -1,28 +1,29 @@
 import { readdirSync } from 'fs'
 import path from 'path'
 
-export default function assignInteractions<T>(thisObj: T, interactionsDir: string): void {
-  const files = readdirSync(interactionsDir)
+export default function assignTasks<T>(thisObj: T, tasksDir: string): void {
+  if (!tasksDir) throw new Error(`tasksDir was ${tasksDir}`)
+  const files = readdirSync(tasksDir)
   for (const file of files) {
     const match = file.match(/(\.ts|\.js|\.tsx|\.jsx)$/)
     if (match) {
       const ext = match[1]
       const name = path.basename(file, ext)
       Object.defineProperty(thisObj, name, {
-        value: loadInteraction(name),
+        value: loadTask(name),
       })
     }
   }
 
-  function loadInteraction(name: string) {
-    const path = `${interactionsDir}/${name}`
+  function loadTask(name: string) {
+    const path = `${tasksDir}/${name}`
     try {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const interaction = require(path)
-      return interaction[name]
+      const task = require(path)
+      return task[name]
     } catch (err) {
       return () => {
-        throw new Error(`No interaction in: ${path}.{ts,js,tsx,jsx}`)
+        throw new Error(`No task in: ${path}.{ts,js,tsx,jsx}`)
       }
     }
   }

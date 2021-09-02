@@ -5,7 +5,7 @@ import { ActorWorld, ActorParameterType } from '../../src/index'
 import Shouty from '../src/Shouty'
 import { makeApp } from '../src/server'
 import { promisify } from 'util'
-import { InboxMessages, Shout, StartSession } from './interactions/types'
+import { InboxMessages, Shout, StartSession } from './tasks/types'
 
 defineParameterType({ ...ActorParameterType })
 defineParameterType({
@@ -25,7 +25,7 @@ export default class World extends ActorWorld {
 
   public readonly appElements = new AppElements()
 
-  // Screenplay Interactions
+  // Tasks
   public startSession: StartSession
   public shout: Shout
   public inboxMessages: InboxMessages

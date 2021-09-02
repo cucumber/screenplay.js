@@ -7,15 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ----
 ## [Unreleased]
 
-### Added
-
 ### Changed
 
-### Deprecated
-
-### Removed
-
-### Fixed
+* Rename the `Interaction` type to `Action`.
+* Explain that *tasks* can be decomposed into multiple *interactions*, and that
+  they are both of type `Action`.
 
 ## [4.0.0]
 
