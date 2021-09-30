@@ -375,19 +375,19 @@ in two places of your code:
 will use it to interact with the server. This separation of concerns prevents network implementation details to
 bleed into the UI code.
 
-You'll typically have two implementations of your `Session` interface - `HttpSession` and `ShoutySession`.
+You'll typically have two implementations of your `Session` interface - `HttpSession` and `DirectSession`.
 
 The `HttpSession` is where you encapsulate all of the `fetch`, `WebSocket` and `EventSource` logic. This is the class
 your UI will use in production. You will also use it in tests.
 
-The `ShoutySession` is an implementation that talks directly to the server side domain layer with direct function calls
+The `DirectSession` is an implementation that talks directly to the server side domain layer with direct function calls
 (without any networking). This implementation will only be used in tests.
 
 By organising your code this way, you have four ways you can run your Cucumber Scenarios.
 
-* `session` tasks using `ShoutySession` (fastest tests, domain layer coverage)
+* `session` tasks using `DirectSession` (fastest tests, domain layer coverage)
 * `session` tasks using `HttpSession` (slower tests, http + domain layer coverage)
-* `dom` tasks using `ShoutySession` (slower tests, UI + domain layer coverage)
+* `dom` tasks using `DirectSession` (slower tests, UI + domain layer coverage)
 * `dom` tasks using `HttpSession` (slowest tests, UI + http + domain layer coverage)
 
 In the example we use [world parameters](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters)
