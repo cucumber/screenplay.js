@@ -1,5 +1,5 @@
-export type Action<Answer = void> = (actor: Actor) => Answer
-export type PromiseAction<Answer = void> = (actor: Actor) => Promise<Answer>
+export type Action<Answer = void, World = unknown> = (actor: Actor<World>) => Answer
+export type PromiseAction<Answer = void, World = unknown> = (actor: Actor<World>) => Promise<Answer>
 
 export type DefaultFunction<T> = () => T
 
@@ -21,14 +21,14 @@ export default class Actor<World = unknown> {
     return this.memory.get(key) as T
   }
 
-  public attemptsTo<Answer>(action: Action<Answer>): Answer {
+  public attemptsTo<Answer>(action: Action<Answer, World>): Answer {
     return action(this)
   }
 
   /**
    * Just a synonym for attemptsTo
    */
-  public ask<Answer>(action: Action<Answer>): Answer {
+  public ask<Answer>(action: Action<Answer, World>): Answer {
     return action(this)
   }
 }
