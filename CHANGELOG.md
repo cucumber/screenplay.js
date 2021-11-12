@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [5.1.0] - 2021-11-12
 ### Added
 - Added `World` generic type to `Action` and `PromiseAction`
 
@@ -46,7 +48,8 @@ they are both of type `Action`.
 ### Added
 - First release
 
-[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.1.0...HEAD
+[5.1.0]: https://github.com/cucumber/screenplay.js/compare/v5.0.0...v5.1.0
 [5.0.0]: https://github.com/cucumber/screenplay.js/compare/v4.0.0...v5.0.0
 [4.0.0]: https://github.com/cucumber/screenplay.js/compare/v3.1.0...v4.0.0
 [3.1.0]: https://github.com/cucumber/screenplay.js/compare/v3.0.0...v3.1.0
@@ -54,7 +57,3 @@ they are both of type `Action`.
 [2.0.0]: https://github.com/cucumber/screenplay.js/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/cucumber/screenplay.js/compare/v0.0.1...v1.0.0
 [0.0.1]: https://github.com/cucumber/screenplay.js/releases/tag/v0.0.1
-
-<!-- Contributors in alphabetical order -->
-[aslakhellesoy]:    https://github.com/aslakhellesoy
-[vincent-psarga]:   https://github.com/vincent-psarga
