@@ -1,6 +1,6 @@
 # @cucumber/screenplay
 
-[![CI](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml/badge.svg)](https://github.com/cucumber/screenplay.js/actions/workflows/ci.yml)
+[![test-javascript](https://github.com/cucumber/screenplay.js/actions/workflows/test-javascript.yaml/badge.svg)](https://github.com/cucumber/screenplay.js/actions/workflows/test-javascript.yaml)
 
 Cucumber Screenplay is a small library for [Cucumber.js](https://github.com/cucumber/cucumber-js/) that enables better
 acceptance tests (Gherkin Scenarios):
