@@ -24,7 +24,7 @@
     "@typescript-eslint/eslint-plugin": "5.10.2",
     "@typescript-eslint/parser": "5.10.2",
     "assembly-diagrams": "0.0.1",
-    "electron": "13.6.8",
+    "electron": "16.0.8",
     "eslint": "8.8.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-node": "11.1.0",
