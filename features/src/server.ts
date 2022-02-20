@@ -39,6 +39,8 @@ export function makeApp(shouty: Shouty) {
       sse.unpipe(res)
       res.end()
     })
+
+    return null
   })
 
   return exp
