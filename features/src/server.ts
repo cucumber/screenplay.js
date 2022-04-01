@@ -22,7 +22,8 @@ export function makeApp(shouty: Shouty) {
     const { userId } = req.query
     const session = shouty.getSession(userId as string)
     if (!session) {
-      return res.status(500).end(`No session for userId=${userId}`)
+      res.status(500).end(`No session for userId=${userId}`)
+      return
     }
     const sse = new SseStream(req)
 
