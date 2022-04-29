@@ -10,7 +10,7 @@
   "packageRules": [
     {
       "depTypeList": ["devDependencies", "dependencies"],
-      "updateTypes": ["minor", "patch"],
+      "updateTypes": ["major", "minor", "patch"],
       "automerge": true,
       "automergeType": "branch"
     }
