@@ -7,6 +7,7 @@ acceptance tests (Gherkin Scenarios):
 
 * 🚅 Full-stack acceptance tests that run in **milliseconds**
 * 🔓 Encourages loosely coupled system components that are easier to test in isolation
+* 🧒 Incremental development - get **feedback** before you've implemented the full stack
 * 🧩 Assembles system components in several ways, so you can optimize for **speed** or **test coverage**
 * 📗 Readable scenarios that describe the **what** instead of the **how**
 * 🧰 Maintainable automation code
