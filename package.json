@@ -20,7 +20,7 @@
     "@types/node": "16.11.34",
     "@types/node-fetch": "2.6.1",
     "@types/react": "18.0.9",
-    "@types/react-dom": "18.0.3",
+    "@types/react-dom": "18.0.4",
     "@typescript-eslint/eslint-plugin": "5.23.0",
     "@typescript-eslint/parser": "5.23.0",
     "assembly-diagrams": "0.0.1",
