@@ -1,5 +1,5 @@
-import { Action } from '../../../../../src'
+import { Action, PromiseAction } from '../../../../../src'
 import { Message } from '../../../../src/types'
 
-export type ClickShoutButton = () => Action
+export type ClickShoutButton = () => PromiseAction
 export type TypeMessage = (message: Message) => Action

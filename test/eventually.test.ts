@@ -14,6 +14,12 @@ describe('eventually', () => {
       assert.strictEqual(result, 42)
     })
 
+    it('resolves immediately even if condition returns false', async () => {
+      const condition: Condition<boolean> = () => false
+      const result = await eventually(condition)
+      assert.strictEqual(result, false)
+    })
+
     it('resolves eventually after rejecting first', async () => {
       let n = 40
       const condition: Condition<string> = () => {
@@ -45,6 +51,12 @@ describe('eventually', () => {
       const condition: Condition<number> = () => Promise.resolve(42)
       const result = await eventually(condition)
       assert.strictEqual(result, 42)
+    })
+
+    it('resolves immediately even if condition returns false', async () => {
+      const condition: Condition<boolean> = () => Promise.resolve(false)
+      const result = await eventually(condition)
+      assert.strictEqual(result, false)
     })
 
     it('resolves eventually after rejecting first', async () => {

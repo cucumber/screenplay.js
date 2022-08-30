@@ -1,13 +1,16 @@
-import { Actor } from '../../../../../src'
+import { Actor, eventually } from '../../../../../src'
 import World from '../../../World'
 import { getByText } from '@testing-library/dom'
-import userEvent from '@testing-library/user-event'
 import { ClickShoutButton } from './types'
+import { DomUser } from '../../../helpers/getDomUser'
+import assert from 'assert'
 
 export const clickShoutButton: ClickShoutButton = () => {
   return async (actor: Actor<World>) => {
-    const $appElement = actor.recall('appElement') as HTMLElement
-    const submit = getByText($appElement, `Shout`)
-    userEvent.click(submit)
+    const { element, user } = actor.recall<DomUser>('domUser')
+    const submit = getByText(element, `Shout`)
+    user.click(submit)
+    // The field will be cleared when the POST is complete
+    await eventually(() => assert.deepStrictEqual(element.querySelector('input')?.value, ''))
   }
 }
