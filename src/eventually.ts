@@ -6,8 +6,9 @@ export type EventuallyOptions = {
 }
 
 /**
- * Waits for a condition to eventually pass. The condition may run several times depending on the timeout
- * and interval values of options.
+ * Waits for a condition to eventually pass without an error.
+ * The condition will pass regardless of the return value (including false, 0, undefined or null).
+ * The condition will run multiple times run until it passes or times out, depending on the timeout and interval values of options.
  *
  * @param condition
  * @param options
@@ -35,7 +36,7 @@ export default function eventually<Result>(condition: Condition<Result>, options
   })
 
   const timeoutPromise = new Promise<Result>(
-    (resolve, reject) =>
+    (_, reject) =>
       (timeoutId = setTimeout(() => {
         reject(lastError || new Error(`Timeout after ${timeout}ms`))
       }, timeout))

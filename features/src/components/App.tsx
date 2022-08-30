@@ -28,12 +28,15 @@ const App: React.FunctionComponent<Props> = ({ session }) => {
 
   const onShout: React.FormEventHandler = (e) => {
     e.preventDefault()
-    session.send(message).catch((error) => setError(error))
+    session
+      .send(message)
+      .then(() => setMessage(''))
+      .catch((error) => setError(error))
   }
 
   return (
     <div>
-      <span>{connected ? 'connected' : 'disconnected'}</span>
+      <span className="status">{connected ? 'connected' : 'disconnected'}</span>
       {error && <pre>{error.stack}</pre>}
       <form onSubmit={onShout}>
         <label>

@@ -21,7 +21,7 @@ type Stop = () => Promise<void>
 export default class World extends ActorWorld {
   public readonly stops: Stop[] = []
   public readonly shouty = new Shouty()
-  public readonly apiPort = 8080
+  public readonly apiPort = 8087
 
   public readonly appElements = new AppElements()
 
