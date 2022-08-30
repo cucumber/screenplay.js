@@ -18,14 +18,13 @@ export default class HttpSession implements Session {
 
     return new Promise((resolve, reject) => {
       const eventSource = this.newEventSource(url.toString())
+      this.eventSource = eventSource
       eventSource.onerror = (e) => reject(new Error(`Connection failed: ${JSON.stringify(e)}`))
       eventSource.onopen = () => resolve()
 
       eventSource.addEventListener('message', (event) => {
         this.inbox.deliver(event.data)
       })
-
-      this.eventSource = eventSource
     })
   }
 
