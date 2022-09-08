@@ -5,12 +5,12 @@
 Cucumber Screenplay is a small library for [Cucumber.js](https://github.com/cucumber/cucumber-js/) that enables better
 acceptance tests (Gherkin Scenarios):
 
-- 🚅 Full-stack acceptance tests that run in **milliseconds**
-- 🔓 Encourages loosely coupled system components that are easier to test in isolation
-- 🧒 Incremental development - get **feedback** before you've implemented the full stack
-- 🧩 Assembles system components in several ways, so you can optimize for **speed** or **test coverage**
-- 📗 Readable scenarios that describe the **what** instead of the **how**
-- 🧰 Maintainable automation code
+* 🚅 Full-stack acceptance tests that run in **milliseconds**
+* 🔓 Encourages loosely coupled system components that are easier to test in isolation
+* 🧒 Incremental development - get **feedback** before you've implemented the full stack
+* 🧩 Assembles system components in several ways, so you can optimize for **speed** or **test coverage**
+* 📗 Readable scenarios that describe the **what** instead of the **how**
+* 🧰 Maintainable automation code
 
 See the [credits](#credits) section for details about prior work that inspired this library.
 
@@ -22,30 +22,30 @@ When('{actor} logs in successfully', async function (actor: Actor) {
 })
 ```
 
-You can provide several implementations of `logIn` - one that interacts with the user interface, but _also_ one that
-interacts with the API layer _underneath_ the user interface via direct function calls or HTTP requests.
+You can provide several implementations of `logIn` - one that interacts with the user interface, but *also* one that
+interacts with the API layer *underneath* the user interface via direct function calls or HTTP requests.
 
 This forces you to avoid UI language in your scenarios like "fill in field" and "click button", because it doesn't make
 sense to do that in a `logIn` implementation that isn't using the UI. Likewise, it forces you to avoid using HTTP
 language like "execute HTTP POST /login", because it doesn't make sense to do this in the `logIn` implementation that
 uses the UI.
 
-These constraints encourage you to write _readable_ scenarios that describe _what users can do_ rahter than
-_how your system is implemented_. Your scenarios become living documentation that can be understood by everyone on
+These constraints encourage you to write *readable* scenarios that describe *what users can do* rahter than
+*how your system is implemented*. Your scenarios become living documentation that can be understood by everyone on
 the team.
 
 ## Assemblies
 
 With Cucumber Screenplay you can evolve an acceptance test suite that you can run with multiple configurations, or
-_assemblies_. The [assembly diagrams](https://github.com/subsecondtdd/assembly-diagrams#readme) below
+*assemblies*. The [assembly diagrams](https://github.com/subsecondtdd/assembly-diagrams#readme) below
 illustrate how:
 
-- ![#FFB000](https://via.placeholder.com/15/FFB000/000000?text=+) Test components
-- ![#DC267F](https://via.placeholder.com/15/DC267F/000000?text=+) Infrastructure components
-- ![#648FFF](https://via.placeholder.com/15/648FFF/000000?text=+) Production components
+* ![#FFB000](https://via.placeholder.com/15/FFB000/000000?text=+) Test components
+* ![#DC267F](https://via.placeholder.com/15/DC267F/000000?text=+) Infrastructure components
+* ![#648FFF](https://via.placeholder.com/15/648FFF/000000?text=+) Production components
 
 | DOM-HTTP-Domain                                | DOM-Domain                           | HTTP-Domain                            | Domain                       |
-| ---------------------------------------------- | ------------------------------------ | -------------------------------------- | ---------------------------- |
+| ---------------------------------------------- | ------------------------------------ | ---------------------------------------| ---------------------------- |
 | ![DOM-HTTP-Domain](images/dom-http-domain.svg) | ![DOM-Domain](images/dom-domain.svg) | ![HTTP-Domain](images/http-domain.svg) | ![Domain](images/domain.svg) |
 
 Watch Cucumber creator Aslak Hellesøy explain how assemblies can be used to build acceptance tests that run in milliseconds:
@@ -81,7 +81,8 @@ import { ActorWorld, ActorParameterType } from '@cucumber/screenplay'
 defineParameterType(ActorParameterType)
 
 // Define your own World class that extends from ActorWorld
-export default class World extends ActorWorld {}
+export default class World extends ActorWorld {
+}
 setWorldConstructor(World)
 ```
 
@@ -98,11 +99,11 @@ When('{actor} logs in', async function (actor: Actor) {
 })
 ```
 
-Keep reading to learn how to define _tasks_.
+Keep reading to learn how to define *tasks*.
 
 ### Perfoming tasks
 
-Now that your step definitions can be passed `Actor` objects, we need to define _tasks_ that the actor can perform
+Now that your step definitions can be passed `Actor` objects, we need to define *tasks* that the actor can perform
 to achieve a particular goal.
 
 A task is a function that returns another function that expects an `Actor` parameter.
@@ -132,7 +133,8 @@ When('{actor} logs in', async function (actor: Actor) {
 
 #### Tasks and Interactions
 
-The screenplay pattern encourages you to decompose complex tasks into multiple _interaction_:
+The screenplay pattern encourages you to decompose complex tasks into multiple *interaction*:
+
 
                              +--------+
                              | Action |
@@ -145,7 +147,7 @@ The screenplay pattern encourages you to decompose complex tasks into multiple _
     | actor |------>| task |--------->| interaction |
     +-------+       +------+    0..N  +-------------+
 
-In `@cucumber/screenplay`, both _tasks_ and _interactions_ are of type `Action`. The library does not
+In `@cucumber/screenplay`, both *tasks* and *interactions* are of type `Action`. The library does not
 make a distinction between them, it is up to you how you decompose tasks into interactions.
 
 See [shout.ts](features/support/tasks/dom/shout.ts) for an example of a task that delegates to two interactions.
@@ -154,8 +156,8 @@ See [shout.ts](features/support/tasks/dom/shout.ts) for an example of a task tha
 
 In addition to `Actor#attemptsTo` there is also an `Actor#ask` method. It has exactly the same signature
 and behaviour as `Actor#attemptsTo`. It often makes your code more readable if you use `Actor#attemptsTo`
-in your `When` step definitions that _modify_ system state, and `Actor#ask` in `Then` step definitions
-that _query_ system state.
+in your `When` step definitions that *modify* system state, and `Actor#ask` in `Then` step definitions
+that *query* system state.
 
 For example:
 
@@ -176,10 +178,7 @@ import { inboxMessages } from '../support/tasks/inboxMessages'
 
 Then('{actor} should have received the following messages:', function (actor: Actor, expectedMessages: DataTable) {
   const receivedMessages = actor.ask(inboxMessages())
-  assert.deepStrictEqual(
-    receivedMessages,
-    expectedMessages.rows.map((row) => row[0])
-  )
+  assert.deepStrictEqual(receivedMessages, expectedMessages.rows.map(row => row[0]))
 })
 ```
 
@@ -247,13 +246,11 @@ change ypur `World` constructor, and add a `Begin` step:
 import { setWorldConstructor } from '@cucumber/cucumber'
 import { ActorWorld, defineActorParameterType, Action } from '@cucumber/screenplay'
 import { InboxMessages, Shout, StartSession } from './tasks/types'
-
 export default class World extends ActorWorld {
   // These tasks will be loaded automatically
   public startSession: StartSession
   public shout: Shout
   public inboxMessages: InboxMessages
-
   constructor(props: IWorldOptions) {
     super({ ...props, packageType: 'module' })
   }
@@ -268,7 +265,7 @@ Begin(() => {
 ```
 
 If you're using this technique, you also need to adapt your step definitions to reference tasks from the
-_world_ (`this`):
+*world* (`this`):
 
 ```typescript
 When('{actor} shouts {string}', async function (this: World, actor: Actor, message: string) {
@@ -391,14 +388,14 @@ defineParameterType({ ...ActorParameterType, name: 'acteur', regexp: /Marcel|Ber
 When you're working with `@cucumber/screenplay` and testing against multiple layers, we recommend you use only two
 task implementations:
 
-- `dom` for tasks that use the DOM
-- `session` for tasks that use a `Session`
+* `dom` for tasks that use the DOM
+* `session` for tasks that use a `Session`
 
 A `Session` represents a user (actor) having an interactive session with your system. A `Session` will typically be used
 in two places of your code:
 
-- From your `session` tasks
-- From your UI code (React/Vue components etc)
+* From your `session` tasks
+* From your UI code (React/Vue components etc)
 
 `Session` is an interface that is specific to your implementation that you should implement yourself. Your UI code
 will use it to interact with the server. This separation of concerns prevents network implementation details to
@@ -414,30 +411,30 @@ The `DomainSession` is an implementation that talks directly to the server side 
 
 By organising your code this way, you have four ways you can assemble your system when you run your Cucumber Scenarios.
 
-- `session` tasks using `DomainSession` (fastest tests, domain layer coverage)
-- `session` tasks using `HttpSession` (slower tests, http + domain layer coverage)
-- `dom` tasks using `DomainSession` (slower tests, UI + domain layer coverage)
-- `dom` tasks using `HttpSession` (slowest tests, UI + http + domain layer coverage)
+* `session` tasks using `DomainSession` (fastest tests, domain layer coverage)
+* `session` tasks using `HttpSession` (slower tests, http + domain layer coverage)
+* `dom` tasks using `DomainSession` (slower tests, UI + domain layer coverage)
+* `dom` tasks using `HttpSession` (slowest tests, UI + http + domain layer coverage)
 
 In the example we use [world parameters](https://github.com/cucumber/cucumber-js/blob/main/docs/support_files/world.md#world-parameters)
 to control how to interact with the system and how the system is assembled.
 
 ## Credits
 
-This library is inspired by the _Screenplay Pattern_. This list is a chronological order of events, implementations and writings related to the evolution of the pattern.
+This library is inspired by the *Screenplay Pattern*. This list is a chronological order of events, implementations and writings related to the evolution of the pattern.
 
-- 2007: [In praise of abstraction](https://developertesting.com/archives/month200710/20071013-In%20Praise%20of%20Abstraction.html) - talk by Kevin Lawrence.
-- 2007: Antony Marcano [demonstrates the Journey Pattern](http://www.russmiles.com/essais/on-the-origins-of-the-journey-pattern-in-testing) at the Agile Alliance Functional Test Tools workshop.
-- 2009: Antony Marcano and Andy Palmer showed Aslak Hellesøy the pattern at Agile 2009 in Chicago.
-- 2012: [Screenplay4j](https://bitbucket-archive.softwareheritage.org/projects/te/testingreflections/screenplay4j.html) - the first public implementation by Antony Marcano and Andy Palmer.
-- 2012: [User Centred Scenarios: Describing capabilities, not solutions](https://skillsmatter.com/skillscasts/3141-user-centred-scenarios-describing-capabilities-not-solutions) - talk by Andy Palmer and Antony Marcano where "millisecond acceptance" tests are described towards the end.
-- 2015: John Ferguson Smart and Jan Molak, along with Andy and Antony, added native support for the Screenplay pattern to [Serenity BDD](http://serenity-bdd.info/) for Web and API testing, popularising the pattern in the Java testing community.
-- 2016: [Beyond Page Objects: Next Generation Test Automation with Serenity and the Screenplay Pattern](https://www.infoq.com/articles/Beyond-Page-Objects-Test-Automation-Serenity-Screenplay/) by Andy Palmer, Antony Marcano, John Ferguson Smart and Jan Molak.
-- 2016: [Screenplays and Journeys, Not Page Objects](https://testerstories.com/2016/06/screenplays-and-journeys-not-page-objects/) - blog post by Jeff Nyman
-- 2016: [Screenplay Pattern](https://serenity-js.org/handbook/thinking-in-serenity-js/screenplay-pattern.html) as described by Jan Molak.
-- 2016: [Serenity/JS](https://serenity-js.org) - the original JavaScript/TypeScript implementation of the Screenplay Pattern by Jan Molak.
-- 2017: Nat Pryce explored using the Screenplay Pattern to write tests that run in milliseconds - https://speakerdeck.com/npryce/having-our-cake-and-eating-it-1
-- 2019: [ScreenPy](https://pypi.org/project/screenpy/) - a Python implementation of the Screenplay pattern inspired by the Serenity BDD implementation
-- 2020: [Boa Constrictor](https://automationpanda.com/2020/10/16/introducing-boa-constrictor-the-net-screenplay-pattern/) - a .NET implementation of Screenplay by Andrew Knight, inspired by Serenity BDD and Serenity/JS
-- 2020: [Understanding Screenplay](<https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/>) - blog series by Matt Wynne.
-- 2021: [BDD in Action, 2nd Edition](https://www.manning.com/books/bdd-in-action-second-edition) (by John Ferguson Smart with Jan Molak) includes a full chapter and many examples of the Screenplay pattern in Java and Typescript
+* 2007: [In praise of abstraction](https://developertesting.com/archives/month200710/20071013-In%20Praise%20of%20Abstraction.html) - talk by Kevin Lawrence.
+* 2007: Antony Marcano [demonstrates the Journey Pattern](http://www.russmiles.com/essais/on-the-origins-of-the-journey-pattern-in-testing) at the Agile Alliance Functional Test Tools workshop.
+* 2009: Antony Marcano and Andy Palmer showed Aslak Hellesøy the pattern at Agile 2009 in Chicago.
+* 2012: [Screenplay4j](https://bitbucket-archive.softwareheritage.org/projects/te/testingreflections/screenplay4j.html) - the first public implementation by Antony Marcano and Andy Palmer.
+* 2012: [User Centred Scenarios: Describing capabilities, not solutions](https://skillsmatter.com/skillscasts/3141-user-centred-scenarios-describing-capabilities-not-solutions) - talk by Andy Palmer and Antony Marcano where "millisecond acceptance" tests are described towards the end.
+* 2015: John Ferguson Smart and Jan Molak, along with Andy and Antony, added native support for the Screenplay pattern to [Serenity BDD](http://serenity-bdd.info/) for Web and API testing, popularising the pattern in the Java testing community.
+* 2016: [Beyond Page Objects: Next Generation Test Automation with Serenity and the Screenplay Pattern](https://www.infoq.com/articles/Beyond-Page-Objects-Test-Automation-Serenity-Screenplay/) by Andy Palmer, Antony Marcano, John Ferguson Smart and Jan Molak.
+* 2016: [Screenplays and Journeys, Not Page Objects](https://testerstories.com/2016/06/screenplays-and-journeys-not-page-objects/) - blog post by Jeff Nyman
+* 2016: [Screenplay Pattern](https://serenity-js.org/handbook/thinking-in-serenity-js/screenplay-pattern.html) as described by Jan Molak.
+* 2016: [Serenity/JS](https://serenity-js.org) - the original JavaScript/TypeScript implementation of the Screenplay Pattern by Jan Molak.
+* 2017: Nat Pryce explored using the Screenplay Pattern to write tests that run in milliseconds - https://speakerdeck.com/npryce/having-our-cake-and-eating-it-1
+* 2019: [ScreenPy](https://pypi.org/project/screenpy/) - a Python implementation of the Screenplay pattern inspired by the Serenity BDD implementation
+* 2020: [Boa Constrictor](https://automationpanda.com/2020/10/16/introducing-boa-constrictor-the-net-screenplay-pattern/) - a .NET implementation of Screenplay by Andrew Knight, inspired by Serenity BDD and Serenity/JS
+* 2020: [Understanding Screenplay](https://cucumber.io/blog/bdd/understanding-screenplay-(part-1)/) - blog series by Matt Wynne.
+* 2021: [BDD in Action, 2nd Edition](https://www.manning.com/books/bdd-in-action-second-edition) (by John Ferguson Smart with Jan Molak) includes a full chapter and many examples of the Screenplay pattern in Java and Typescript
