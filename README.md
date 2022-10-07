@@ -240,7 +240,7 @@ setWorldConstructor(World)
 ```
 
 If you are using ES Modules (by setting `"type": "module"` in `package.json`), you need to
-change ypur `World` constructor, and add a `Begin` step:
+change ypur `World` constructor, and add a `Before` step:
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
@@ -257,7 +257,7 @@ export default class World extends ActorWorld {
 }
 setWorldConstructor(World)
 
-Begin(() => {
+Before(async () => {
   if (this.promise) {
     await this.promise
   }

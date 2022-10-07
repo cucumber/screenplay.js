@@ -13,12 +13,11 @@ export default class ActorWorld extends World {
   public readonly promise
 
   constructor(props: IActorWorldOptions) {
-    console.log('>>>> ActorWorld', props)
     const { packageType = 'commonjs', ...rest } = props
 
     super(rest)
 
-    if (packageType == 'commonjs' && this.parameters.tasks) {
+    if (packageType === 'commonjs' && this.parameters.tasks) {
       assignTasks(this, this.parameters.tasks)
     }
 
