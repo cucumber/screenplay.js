@@ -223,7 +223,7 @@ cucumber-js --world-parameters '{ "tasks": "support/tasks/dom" }'
 cucumber-js --world-parameters '{ "tasks": "support/tasks/session" }'
 ```
 
-Here is what the `World` looks like:
+Here is what the `World` looks like (if you are using CommonJS modules):
 
 ```typescript
 import { setWorldConstructor } from '@cucumber/cucumber'
@@ -237,6 +237,31 @@ export default class World extends ActorWorld {
   public inboxMessages: InboxMessages
 }
 setWorldConstructor(World)
+```
+
+If you are using ES Modules (by setting `"type": "module"` in `package.json`), you need to
+change ypur `World` constructor, and add a `Before` step:
+
+```typescript
+import { setWorldConstructor } from '@cucumber/cucumber'
+import { ActorWorld, defineActorParameterType, Action } from '@cucumber/screenplay'
+import { InboxMessages, Shout, StartSession } from './tasks/types'
+export default class World extends ActorWorld {
+  // These tasks will be loaded automatically
+  public startSession: StartSession
+  public shout: Shout
+  public inboxMessages: InboxMessages
+  constructor(props: IWorldOptions) {
+    super({ ...props, packageType: 'module' })
+  }
+}
+setWorldConstructor(World)
+
+Before(async () => {
+  if (this.promise) {
+    await this.promise
+  }
+})
 ```
 
 If you're using this technique, you also need to adapt your step definitions to reference tasks from the

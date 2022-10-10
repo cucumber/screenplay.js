@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add support for ES Modules in the System Under Test [#121](https://github.com/cucumber/screenplay.js/pull/121)
 
 ## [5.1.0] - 2021-11-12
 ### Added
