@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.2.0] - 2022-10-10
 ### Added
 - Add support for ES Modules in the System Under Test [#121](https://github.com/cucumber/screenplay.js/pull/121)
 
@@ -55,7 +56,8 @@ they are both of type `Action`.
 ### Added
 - First release
 
-[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.1.0...HEAD
+[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.2.0...HEAD
+[5.2.0]: https://github.com/cucumber/screenplay.js/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/cucumber/screenplay.js/compare/v5.0.0...v5.1.0
 [5.0.0]: https://github.com/cucumber/screenplay.js/compare/v4.0.0...v5.0.0
 [4.0.0]: https://github.com/cucumber/screenplay.js/compare/v3.1.0...v4.0.0
