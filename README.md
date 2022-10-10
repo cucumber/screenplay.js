@@ -61,7 +61,7 @@ First, add the library to your project:
 ## Usage
 
 This guide will walk you through the usage of the `@cucumber/screenplay` step by step. For a full example, please refer
-to the files in the `features` directory (which are also acceptance tests for this library).
+to [this repo](https://github.com/cucumber/screenplay.js.examples).
 
 ### Actors
 
@@ -94,8 +94,7 @@ When Martha logs in
 
 ```typescript
 When('{actor} logs in', async function (actor: Actor) {
-  // The logIn() function is an Action
-  await actor.attemptsTo(logIn(`${actor.name}@test.com`, 'valid-password'))
+  // tell the actor to perform a task
 })
 ```
 
