@@ -6,11 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
 ### Added
 - Add support for ES Modules in the System Under Test [#121](https://github.com/cucumber/screenplay.js/pull/121)
 
 ### Fixed
 - Dependency on `@cucumber/electron` has been removed, and the example code has moved to https://github.com/cucumber/screenplay.js.examples ([#127](https://github.com/cucumber/screenplay.js/issues/127), [#129](https://github.com/cucumber/screenplay.js/pull/129))
+- Allow using `@cucumber/cucumber` version `^8.0.0`.
 
 ## [5.1.0] - 2021-11-12
 ### Added
