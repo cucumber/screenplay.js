@@ -17,15 +17,16 @@ export default async function asyncAssignTasks<T>(thisObj: T, tasksDir: string):
 
   async function loadTask(name: string) {
     const path = `${tasksDir}/${name}`
-    try {
-      // Typescript has issues with dynamic imports, even though node supports them
-      // for both commonjs and esmodules. see: https://github.com/microsoft/TypeScript/issues/43329
-      const task = await Function(`return import("${path}")`)()
-      return task[name]
-    } catch (err) {
-      return () => {
-        throw new Error(`No task in: ${path}.{ts,js,tsx,jsx}`)
-      }
+    // Typescript has issues with dynamic imports, even though node supports them
+    // for both commonjs and esmodules. see: https://github.com/microsoft/TypeScript/issues/43329
+    const task = await Function(`return import("${path}")`)()
+
+    // if typescript is using commonjs modules
+    if (task.default) {
+      return task.default[name]
     }
+
+    // if typescript is using es modules
+    return task[name]
   }
 }

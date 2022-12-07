@@ -1,5 +1,9 @@
 {
   "require": ["./env.js"],
   "extension": ["ts"],
-  "recursive": true
+  "recursive": true,
+  "node-option": [
+    "experimental-specifier-resolution=node",
+    "loader=ts-node/esm"
+  ]
 }
