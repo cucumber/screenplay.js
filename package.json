@@ -15,7 +15,7 @@
     "@typescript-eslint/parser": "6.2.0",
     "assembly-diagrams": "0.0.1",
     "eslint": "8.45.0",
-    "eslint-config-prettier": "8.8.0",
+    "eslint-config-prettier": "8.9.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.33.0",
