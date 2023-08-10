@@ -8,7 +8,10 @@ export type DefaultFunction<T> = () => T
  */
 export default class Actor<World = unknown> {
   private readonly memory = new Map<string, unknown>()
-  constructor(public readonly world: World, public readonly name: string) {}
+  constructor(
+    public readonly world: World,
+    public readonly name: string
+  ) {}
 
   public remember<T>(key: string, value: T) {
     this.memory.set(key, value)
