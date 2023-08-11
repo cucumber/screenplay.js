@@ -1,10 +1,14 @@
 name: test-javascript
 
 on:
-  push:
   pull_request:
     branches:
       - main
+  workflow_call:
+  push:
+    branches:
+      - main
+      - renovate/**
 
 jobs:
   test:
