@@ -5,10 +5,10 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "peerDependencies": {
-    "@cucumber/cucumber": "^9.0.0"
+    "@cucumber/cucumber": "^10.0.0"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^9.0.0",
+    "@cucumber/cucumber": "^10.0.0",
     "@types/node": "18.18.4",
     "@types/mocha": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "6.7.4",
