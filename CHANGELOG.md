@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [5.3.0] - 2023-11-15
 ### Added
 - Add support for `@cucumber/cucumber` version `^9.0.0` and `^10.0.0`.
 
@@ -59,7 +60,8 @@ they are both of type `Action`.
 ### Added
 - First release
 
-[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.2.0...HEAD
+[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.3.0...HEAD
+[5.3.0]: https://github.com/cucumber/screenplay.js/compare/v5.2.0...v5.3.0
 [5.2.0]: https://github.com/cucumber/screenplay.js/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/cucumber/screenplay.js/compare/v5.0.0...v5.1.0
 [5.0.0]: https://github.com/cucumber/screenplay.js/compare/v4.0.0...v5.0.0
