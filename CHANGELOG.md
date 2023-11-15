@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Add support for `@cucumber/cucumber` version `^9.0.0` and `^10.0.0`.
+
 ## [5.2.0] - 2022-10-10
 ### Added
 - Add support for ES Modules in the System Under Test [#121](https://github.com/cucumber/screenplay.js/pull/121)
