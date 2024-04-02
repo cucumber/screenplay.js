@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.2",
-    "@types/node": "20.12.2",
+    "@types/node": "20.12.3",
     "@types/mocha": "10.0.6",
     "@typescript-eslint/eslint-plugin": "7.5.0",
     "@typescript-eslint/parser": "7.5.0",
