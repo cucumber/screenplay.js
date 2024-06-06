@@ -32,7 +32,6 @@
     "test": "npm run mocha",
     "mocha": "mocha",
     "prepublishOnly": "npm run build",
-    "upgrade": "npm-check-updates --upgrade",
     "eslint": "eslint --ext ts,tsx --max-warnings 0 src test",
     "eslint-fix": "eslint --ext ts,tsx --max-warnings 0 --fix src test",
     "pretty-quick": "pretty-quick --staged"
