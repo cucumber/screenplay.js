@@ -4,19 +4,22 @@ on:
   push:
     branches: [release/*]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   publish-npm:
     name: Publish NPM module
     runs-on: ubuntu-latest
     environment: Release
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
-          node-version: '22'
+          node-version: '24.x'
           cache: 'npm'
           cache-dependency-path: package-lock.json
-      - run: npm install-test
-      - uses: cucumber/action-publish-npm@v1.1.1
-        with:
-          npm-token: ${{ secrets.NPM_TOKEN }}
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install-ci-test
+      - run: npm publish
