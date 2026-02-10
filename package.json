@@ -16,7 +16,7 @@
     "assembly-diagrams": "0.0.1",
     "eslint": "8.57.1",
     "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-n": "14.0.0",
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.0.1",
