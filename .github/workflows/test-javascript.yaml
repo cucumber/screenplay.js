@@ -1,5 +1,7 @@
 name: test-javascript
 
+permissions: {}
+
 on:
   pull_request:
     branches:
