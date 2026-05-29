@@ -1,5 +1,6 @@
 {
   "require": ["./env.js"],
   "extension": ["ts"],
-  "recursive": true
+  "recursive": true,
+  "node-option": ["no-experimental-strip-types"]
 }
