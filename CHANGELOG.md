@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [5.4.0] - 2026-05-29
 ### Changed
 - Allow new Cucumber versions, fix CI ([#181](https://github.com/cucumber/screenplay.js/pull/181))
 
@@ -62,7 +64,8 @@ they are both of type `Action`.
 ### Added
 - First release
 
-[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.3.0...HEAD
+[Unreleased]: https://github.com/cucumber/screenplay.js/compare/v5.4.0...HEAD
+[5.4.0]: https://github.com/cucumber/screenplay.js/compare/v5.3.0...v5.4.0
 [5.3.0]: https://github.com/cucumber/screenplay.js/compare/v5.2.0...v5.3.0
 [5.2.0]: https://github.com/cucumber/screenplay.js/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/cucumber/screenplay.js/compare/v5.0.0...v5.1.0
